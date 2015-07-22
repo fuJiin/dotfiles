@@ -28,6 +28,7 @@
                        auto-completion-enable-help-tooltip t)
      git
      github
+     colors
      ;; (git :variables
      ;;      git-gutter-use-fringe t)
      ;; markdown
@@ -40,7 +41,7 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(color-theme haml-mode sass-mode)
+   dotspacemacs-additional-packages '(haml-mode sass-mode)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -73,12 +74,12 @@ before layers configuration."
     ;; List of themes, the first of the list is loaded when spacemacs starts.
     ;; Press <SPC> T n to cycle to the next theme in the list (works great
     ;; with 2 themes variants, one dark and one light)
-    dotspacemacs-themes '(solarized-dark
+    dotspacemacs-themes '(spacemacs-dark
+                          solarized-dark
                           solarized-light
                           leuven
                           monokai
                           zenburn)
-
 
     ;; If non nil the cursor color matches the state color.
     dotspacemacs-colorize-cursor-according-to-state t
@@ -162,6 +163,7 @@ before layers configuration."
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+  (load-theme 'pop-rocks)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -178,7 +180,7 @@ layers configuration."
  '(ahs-inhibit-face-list nil)
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "95a6ac1b01dcaed4175946b581461e16e1b909d354ada79770c0821e491067c6" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "b06aaf5cefc4043ba018ca497a9414141341cb5a2152db84a9a80020d35644d1" default)))
+    ("5d0d486dfe11a3095d1ba9638a2b48a0f162bea23045f6e291a90fd9c7c20ded" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "95a6ac1b01dcaed4175946b581461e16e1b909d354ada79770c0821e491067c6" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "b06aaf5cefc4043ba018ca497a9414141341cb5a2152db84a9a80020d35644d1" default)))
  '(ring-bell-function (quote ignore) t))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
