@@ -26,13 +26,14 @@
      themes-megapack
      (auto-completion :variables
                        auto-completion-enable-help-tooltip t)
+     markdown
      git
      github
      colors
+     org
      ;; (git :variables
      ;;      git-gutter-use-fringe t)
      ;; markdown
-     ;; org
      ;; shell
      ;; syntax-checking
      fujiin
@@ -41,7 +42,7 @@
    ;; wrapped in a layer. If you need some configuration for these
    ;; packages then consider to create a layer, you can also put the
    ;; configuration in `dotspacemacs/config'.
-   dotspacemacs-additional-packages '(haml-mode sass-mode)
+   dotspacemacs-additional-packages '(haml-mode sass-mode scss-mode web-mode gh-md)
    ;; A list of packages and/or extensions that will not be install and loaded.
    dotspacemacs-excluded-packages '()
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
@@ -145,7 +146,7 @@ before layers configuration."
     dotspacemacs-smartparens-strict-mode nil
     ;; Select a scope to highlight delimiters. Possible value is `all',
     ;; `current' or `nil'. Default is `all'
-    dotspacemacs-highlight-delimiters 'all
+    dotspacemacs-highlight-delimiters 'nil
     ;; If non nil advises quit functions to keep server open when quitting.
     dotspacemacs-persistent-server nil
     ;; List of search tool executable names. Spacemacs uses the first installed
@@ -157,13 +158,41 @@ before layers configuration."
     dotspacemacs-default-package-repository nil
     )
    ;; User initialization goes here
+  (setq-default ruby-enable-ruby-on-rails-support t)
 )
 
 (defun dotspacemacs/config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
+
+  ;; Load theme
   (load-theme 'pop-rocks)
+
+  ;; Syntax mapping
+  (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+
+  (setq web-mode-content-types-alist
+        '(("jsx" . "\\.js[x]")))
+
+  ;; Settings
+  (global-vi-tilde-fringe-mode -1)
+  (smartparens-global-mode -1)
+
+  ;; Hooks
+  (add-hook 'before-save-hook 'whitespace-cleanup)
+
+  ;; Tabs
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq js-indent-level 2)
+  (setq js2-basic-offset 2)
+
+  ;; Delimiters only for lisp
+  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -178,10 +207,72 @@ layers configuration."
  '(ahs-idle-interval 0.25)
  '(ahs-idle-timer 0 t)
  '(ahs-inhibit-face-list nil)
+ '(ansi-color-names-vector
+   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#657b83"])
+ '(compilation-message-face (quote default))
+ '(cua-global-mark-cursor-color "#2aa198")
+ '(cua-normal-cursor-color "#839496")
+ '(cua-overwrite-cursor-color "#b58900")
+ '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("5d0d486dfe11a3095d1ba9638a2b48a0f162bea23045f6e291a90fd9c7c20ded" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "95a6ac1b01dcaed4175946b581461e16e1b909d354ada79770c0821e491067c6" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "b06aaf5cefc4043ba018ca497a9414141341cb5a2152db84a9a80020d35644d1" default)))
- '(ring-bell-function (quote ignore) t))
+    ("5d0d486dfe11a3095d1ba9638a2b48a0f162bea23045f6e291a90fd9c7c20ded" "5d0d486dfe11a3095d1ba9638a2b48a0f12bea23045f6e291a90fd9c7c20ded" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "95a6ac1b01dcaed4175946b581461e16e1b909d354ada79770c0821e491067c6" "94ba29363bfb7e06105f68d72b268f85981f7fba2ddef89331660033101eb5e5" "3d5ef3d7ed58c9ad321f05360ad8a6b24585b9c49abcee67bdcbb0fe583a6950" "b06aaf5cefc4043ba018ca497a9414141341cb5a2152db84a9a80020d35644d1" default)))
+ '(fci-rule-color "#073642" t)
+ '(highlight-changes-colors (quote ("#d33682" "#6c71c4")))
+ '(highlight-symbol-colors
+   (--map
+    (solarized-color-blend it "#002b36" 0.25)
+    (quote
+     ("#b58900" "#2aa198" "#dc322f" "#6c71c4" "#859900" "#cb4b16" "#268bd2"))))
+ '(highlight-symbol-foreground-color "#93a1a1")
+ '(highlight-tail-colors
+   (quote
+    (("#073642" . 0)
+     ("#546E00" . 20)
+     ("#00736F" . 30)
+     ("#00629D" . 50)
+     ("#7B6000" . 60)
+     ("#8B2C02" . 70)
+     ("#93115C" . 85)
+     ("#073642" . 100))))
+ '(hl-bg-colors
+   (quote
+    ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
+ '(hl-fg-colors
+   (quote
+    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
+ '(magit-diff-use-overlays nil)
+ '(pos-tip-background-color "#073642")
+ '(pos-tip-foreground-color "#93a1a1")
+ '(ring-bell-function (quote ignore) t)
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
+ '(term-default-bg-color "#002b36")
+ '(term-default-fg-color "#839496")
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+    ((20 . "#dc322f")
+     (40 . "#c85d17")
+     (60 . "#be730b")
+     (80 . "#b58900")
+     (100 . "#a58e00")
+     (120 . "#9d9100")
+     (140 . "#959300")
+     (160 . "#8d9600")
+     (180 . "#859900")
+     (200 . "#669b32")
+     (220 . "#579d4c")
+     (240 . "#489e65")
+     (260 . "#399f7e")
+     (280 . "#2aa198")
+     (300 . "#2898af")
+     (320 . "#2793ba")
+     (340 . "#268fc6")
+     (360 . "#268bd2"))))
+ '(vc-annotate-very-old-color nil)
+ '(weechat-color-list
+   (quote
+    (unspecified "#002b36" "#073642" "#990A1B" "#dc322f" "#546E00" "#859900" "#7B6000" "#b58900" "#00629D" "#268bd2" "#93115C" "#d33682" "#00736F" "#2aa198" "#839496" "#657b83"))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
