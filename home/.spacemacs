@@ -18,24 +18,41 @@
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      ;; better-defaults
-     emacs-lisp
+
+     ;; Platform
      osx
+
+     ;; Languages
+     emacs-lisp
      clojure
      ruby
+     ruby-on-rails
      javascript
-     themes-megapack
+     react
+
+     ;; Tools
+     colors
+     eyebrowse
+     (org :variables
+          org-enable-github-support t)
      (auto-completion :variables
                        auto-completion-enable-help-tooltip t)
+
+     ;; Documents
      markdown
+
+     ;; Version Control
      git
      github
-     colors
-     org
-     ;; (git :variables
-     ;;      git-gutter-use-fringe t)
-     ;; markdown
-     ;; shell
-     ;; syntax-checking
+
+     ;; Apps
+     spotify
+     search-engine
+
+     ;; Themes
+     themes-megapack
+
+     ;; Custom
      fujiin
      )
    ;; List of additional packages that will be installed wihout being
@@ -159,6 +176,9 @@ before layers configuration."
     )
    ;; User initialization goes here
   (setq-default ruby-enable-ruby-on-rails-support t)
+
+  ;; Fix Ruby indents
+  (setq-default ruby-align-to-stmt-keywords t)
 )
 
 (defun dotspacemacs/config ()
@@ -171,28 +191,33 @@ layers configuration."
 
   ;; Syntax mapping
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+  ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-mode))
 
   (setq web-mode-content-types-alist
         '(("jsx" . "\\.js[x]")))
 
   ;; Settings
   (global-vi-tilde-fringe-mode -1)
-  (smartparens-global-mode -1)
+  (linum-mode 1)
 
   ;; Hooks
   (add-hook 'before-save-hook 'whitespace-cleanup)
 
   ;; Tabs
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq js-indent-level 2)
-  (setq js2-basic-offset 2)
+  (setq-default web-mode-markup-indent-offset 2)
+  (setq-default web-mode-css-indent-offset 2)
+  (setq-default web-mode-code-indent-offset 2)
+  (setq-default js-indent-level 2)
+  (setq-default js2-basic-offset 2)
+
+  (with-eval-after-load 'web-mode
+    (add-to-list 'web-mode-indentation-params '("lineup-args" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-concats" . nil))
+    (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
   ;; Delimiters only for lisp
-  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode)
-  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode)
+  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode-enable)
+  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-enable)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -242,6 +267,7 @@ layers configuration."
    (quote
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(magit-diff-use-overlays nil)
+ '(paradox-github-token t)
  '(pos-tip-background-color "#073642")
  '(pos-tip-foreground-color "#93a1a1")
  '(ring-bell-function (quote ignore) t)
