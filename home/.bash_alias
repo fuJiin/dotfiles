@@ -1,0 +1,72 @@
+# ======= #
+#
+# This defines common shortcuts I use.
+#
+# Note that it assumes certain software is already installed,
+# but does not guarantee or check its existence.
+#
+# Each section should specify how relevant software should be installed
+#
+# ======= #
+
+# Homeshick
+# Install: brew install homeshick
+#
+alias hs="homeshick"
+
+# Git
+# Install: brew install git
+#
+alias glog="git log --pretty=oneline --abbrev-commit --graph"
+alias gcp="git cherry-pick"
+# From http://stackoverflow.com/questions/17983068/delete-local-git-branches-after-deleting-them-on-the-remote-repo
+alias gbpurge='git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d'
+
+# Github
+# Install: brew install hub
+#
+alias gpr="git pull-request"
+alias gh="github"
+eval "$(hub alias -s)"
+
+# Check to see if ~/.github/api_token.txt is defined.
+# Exports global if it exists
+if [ -f ~/.github/api_token.txt ]; then
+   cat ~/.github/api_token.txt | export HOMEBREW_GITHUB_API_TOKEN=$1
+fi
+
+# Ruby
+# Install via RVM (https://rvm.io/)
+#
+# Rails
+alias bx="bundle exec"
+
+# Padrino
+alias px="padrino"
+
+# Jekyll
+alias jk="jekyll"
+
+# Python
+# Install via Anaconda or Homebrew
+#
+alias ipn="ipython notebook"
+
+# XCode
+#
+alias xc="open ./*.xcworkspace" # hack that assumes 1 workspace file
+
+# Clojure
+# Install: brew install clojure
+#
+alias lrx="[ -f ./.nrepl-port ] && lein repl :connect || lein repl"
+
+# Lein Exec
+alias lx="lein exec"
+
+# Lein CLJSBuild
+alias ljs="lein cljsbuild"
+
+# Misc
+#
+alias flushdns="dscacheutil -flushcache"
