@@ -31,7 +31,7 @@ alias gbpurge='git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git bra
 #
 alias gpr="git pull-request"
 alias gh="github"
-eval "$(hub alias -s)"
+command -v hub && eval "$(hub alias -s)"
 
 # Check to see if ~/.github/api_token.txt is defined.
 # Exports global if it exists
