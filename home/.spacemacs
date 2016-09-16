@@ -32,6 +32,7 @@
      javascript
      react
      python
+     go
 
      ;; Tools
      colors
@@ -179,6 +180,7 @@ before layers configuration."
     dotspacemacs-default-package-repository nil
     )
    ;; User initialization goes here
+  (setq exec-path-from-shell-check-startup-files nil)
   (setq-default ruby-enable-ruby-on-rails-support t)
 
   ;; Fix Ruby indents
