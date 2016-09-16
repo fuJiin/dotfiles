@@ -1,0 +1,5 @@
+# Make sure colors are on
+export CLICOLOR=1
+
+# Set ls colors
+export LSCOLORS=GxFxCxDxBxegedabagaced
