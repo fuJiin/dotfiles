@@ -25,10 +25,13 @@
      ;; Languages
      emacs-lisp
      clojure
-     ruby
+     (ruby :variables
+           ruby-enable-enh-ruby-mode t)
      ruby-on-rails
+     php
      javascript
      react
+     python
 
      ;; Tools
      colors
@@ -40,6 +43,7 @@
 
      ;; Documents
      markdown
+     yaml
 
      ;; Version Control
      git
@@ -181,7 +185,7 @@ before layers configuration."
   (setq-default ruby-align-to-stmt-keywords t)
 )
 
-(defun dotspacemacs/config ()
+(defun dotspacemacs/user-config ()
   "Configuration function.
  This function is called at the very end of Spacemacs initialization after
 layers configuration."
@@ -191,22 +195,22 @@ layers configuration."
 
   ;; Syntax mapping
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
-  ;; (add-to-list 'auto-mode-alist '("\\.jsx\\'" . js2-mode))
-
-  (setq web-mode-content-types-alist
-        '(("jsx" . "\\.js[x]")))
+  (add-to-list 'auto-mode-alist '("\\.jsx\\'" . react-mode))
+  (add-to-list 'auto-mode-alist '("\\.jsx.erb\\'" . react-mode))
 
   ;; Settings
   (global-vi-tilde-fringe-mode -1)
-  (linum-mode 1)
+  (global-linum-mode 1)
 
   ;; Hooks
   (add-hook 'before-save-hook 'whitespace-cleanup)
 
   ;; Tabs
+  (setq-default python-indent 2)
   (setq-default web-mode-markup-indent-offset 2)
   (setq-default web-mode-css-indent-offset 2)
   (setq-default web-mode-code-indent-offset 2)
+  (setq-default css-indent-offset 2)
   (setq-default js-indent-level 2)
   (setq-default js2-basic-offset 2)
 
@@ -216,8 +220,8 @@ layers configuration."
     (add-to-list 'web-mode-indentation-params '("lineup-calls" . nil)))
 
   ;; Delimiters only for lisp
-  (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode-enable)
-  (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-enable)
+  ;; (add-hook 'clojure-mode-hook 'rainbow-delimiters-mode-hook)
+  ;; (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode-hook)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
