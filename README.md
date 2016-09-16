@@ -5,3 +5,9 @@ My dotfiles. Install with [homeshick](https://github.com/andsens/homeshick). See
 1. Install homeshick
 2. `homeshick clone fujiin/dotfiles`
 3. `homeshick link dotfiles`
+
+### Usage
+
+Most of the packages should work out of the box if the relevant software is installed. i.e. Spacemacs will use .spacemacs and .spacemacs-layers, and [Leiningen](http://leiningen.org/) will use .lein.
+
+The exception are the bash files, which are found inside `~/.bash`. The current setup leaves `~/.bash_profile` (or `~/.bashrc`) alone, and defers to the user to source the bash dotfiles they want. Link to these directly by calling `source ~/.bash/xyz`.
