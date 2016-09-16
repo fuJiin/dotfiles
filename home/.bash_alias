@@ -14,6 +14,10 @@
 #
 alias hs="homeshick"
 
+# See homeshick caveats in Homebrew
+export HOMESHICK_DIR=/usr/local/opt/homeshick
+source "/usr/local/opt/homeshick/homeshick.sh"
+
 # Git
 # Install: brew install git
 #
