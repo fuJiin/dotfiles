@@ -19,6 +19,7 @@
       cljsbuild-mode
 
       ;; package fujiins go here
+      (pop-rocks-theme :location local)
       ))
 
 ;; List of packages to exclude.
@@ -26,14 +27,19 @@
 
 ;; For each package, define a function fujiin/init-<package-fujiin>
 ;;
-(defun fujiin/init-inf-clojure ()
-  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode))
-
 ;; (defun fujiin/init-<package-fujiin> ()
 ;;   "Initialize my package"
 ;;   )
+(defun fujiin/init-inf-clojure ()
+  (add-hook 'clojure-mode-hook #'inf-clojure-minor-mode))
+
 (defun fujiin/init-cljsbuild-mode ()
   )
+
+(defun fujiin/init-pop-rocks-theme ()
+  (use-package pop-rocks-theme
+    :init
+    (deftheme pop-rocks)))
 
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
