@@ -36,7 +36,7 @@ command -v hub && eval "$(hub alias -s)"
 # Check to see if ~/.github/api_token.txt is defined.
 # Exports global if it exists
 if [ -f ~/.github/api_token.txt ]; then
-   cat ~/.github/api_token.txt | export HOMEBREW_GITHUB_API_TOKEN=$1
+  export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/.github/api_token.txt)
 fi
 
 # Ruby
