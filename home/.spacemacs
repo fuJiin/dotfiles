@@ -12,6 +12,7 @@
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
+     csv
      ;; ----------------------------------------------------------------
      ;; Example of useful layers you may want to use right away.
      ;; Uncomment some layer names and press <SPC f e R> (Vim style) or
@@ -31,7 +32,7 @@
      php
      javascript
      react
-     python
+     (python :variables python-sort-imports-on-save t)
      java
      scala
 
