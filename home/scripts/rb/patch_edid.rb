@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # Create display override file to force Mac OS X to use RGB mode for Display
-# see http://embdev.net/topic/284710
+# see http://embdev.net/topic/284710, https://gist.github.com/ejdyksen/8302862
 #
 # Update 2013-06-24: added -w0 option to prevent truncated lines
 
