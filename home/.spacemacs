@@ -32,7 +32,7 @@
      php
      javascript
      react
-     (python :variables python-sort-imports-on-save t)
+     (python :variables python-sort-imports-on-save nil)
      java
      scala
 
