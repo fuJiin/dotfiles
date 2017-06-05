@@ -36,7 +36,11 @@ command -v hub >/dev/null 2>&1 && eval "$(hub alias -s)"
 # tmux
 # Install: brew install tmux
 #
+function cch () {
+    ssh $@ -t 'tmux -CC attach || tmux -CC'
+}
 alias tmx="tmux -CC attach || tmux -CC"
+
 
 # Check to see if ~/.github/api_token.txt is defined.
 # Exports global if it exists
