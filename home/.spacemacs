@@ -28,6 +28,7 @@
      clojure
      (ruby :variables
            ruby-enable-enh-ruby-mode t)
+     (go :variables go-use-gometalinter t)
      ruby-on-rails
      php
      javascript
@@ -201,6 +202,8 @@ layers configuration."
   (add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx\\'" . react-mode))
   (add-to-list 'auto-mode-alist '("\\.jsx.erb\\'" . react-mode))
+  (add-to-list 'auto-mode-alist '("\\.hql\\'" . sql-mode))
+  (add-to-list 'auto-mode-alist '("\\.cql\\'" . sql-mode))
 
   ;; Settings
   (global-vi-tilde-fringe-mode -1)
