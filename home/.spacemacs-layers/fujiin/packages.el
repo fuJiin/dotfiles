@@ -20,6 +20,8 @@
 
       ;; package fujiins go here
       (pop-rocks-theme :location local)
+
+      solidity-mode
       ))
 
 ;; List of packages to exclude.
@@ -40,6 +42,10 @@
   (use-package pop-rocks-theme
     :init
     (deftheme pop-rocks)))
+
+(defun fujiin/init-solidity-mode ()
+  (add-to-list 'auto-mode-alist
+               '("\\.sol\\'" . solidity-mode)))
 
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
