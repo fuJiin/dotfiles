@@ -83,3 +83,8 @@ alias ljs="lein cljsbuild"
 # Misc
 #
 alias flushdns="dscacheutil -flushcache"
+
+# Find PID taking up a port
+port () {
+    lsof -n -i:$1 | grep LISTEN
+}
