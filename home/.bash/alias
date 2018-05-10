@@ -21,17 +21,23 @@ source "/usr/local/opt/homeshick/homeshick.sh"
 # Git
 # Install: brew install git
 #
-alias glog="git log --pretty=oneline --abbrev-commit --graph"
+alias gl="git log --pretty=oneline --abbrev-commit --graph"
 alias gcp="git cherry-pick"
+
 # From http://stackoverflow.com/questions/17983068/delete-local-git-branches-after-deleting-them-on-the-remote-repo
-alias gbpurge='git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d'
+alias gbp='git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d'
+
+# Update master and prune both remove and local branches
+alias gpp="git checkout master && git pull && git fetch -p && gbp"
 
 # Github
 # Install: brew install hub
 #
 alias gpr="git pull-request"
-alias gh="github"
 command -v hub >/dev/null 2>&1 && eval "$(hub alias -s)"
+
+# Docker
+alias dx="docker exec"
 
 # tmux
 # Install: brew install tmux
