@@ -1,0 +1,11 @@
+tap "homebrew/core"
+tap "homebrew/bundle"
+tap "homebrew/services"
+tap "d12frosted/emacs-plus"
+tap "caskroom/cask"
+
+brew "homeshick"
+brew "hub"
+brew "pyenv"
+brew "the_silver_searcher"
+brew "d12frosted/emacs-plus/emacs-plus"
