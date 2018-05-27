@@ -1,5 +1,7 @@
 # Install Homebrew
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+if [ ! -f /usr/local/bin/brew ]; then
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
 
 # Update Git
 brew install git
@@ -9,9 +11,10 @@ brew install homeshick
 
 # Download dotfiles
 homeshick clone fuJiin/dotfiles
+homeshick cd dotfiles
 
 # Install Homebrew bundle
-homeshick cd dotfiles && brew bundle install
+brew bundle install --file ./Brewfile --describe || true
 
 # Configure apps
 sh ./configure.sh
