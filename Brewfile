@@ -1,11 +1,38 @@
-tap "homebrew/core"
-tap "homebrew/bundle"
-tap "homebrew/services"
-tap "d12frosted/emacs-plus"
+cask_args appdir: "/Applications"
 tap "caskroom/cask"
 
-brew "homeshick"
+# Editor
+tap "d12frosted/emacs-plus"
+brew "emacs-plus", args: ["HEAD", "with-natural-title-bars"], link: true
+
+# General util
 brew "hub"
-brew "pyenv"
 brew "the_silver_searcher"
-brew "d12frosted/emacs-plus/emacs-plus"
+
+# Version controls
+brew "rbenv"
+brew "pyenv"
+brew "nvm"
+
+# Dev apps
+cask "iterm2"
+cask "spectacle"
+cask "rowanj-gitx"
+cask "alfred"
+cask "flux"
+cask "teensy"
+
+# Productivity apps
+cask "google-chrome"
+cask "evernote"
+cask "lastpass"
+cask "slack"
+
+# Music apps
+cask "spotify"
+cask "soundcleod"
+
+# App store apps
+brew "mas"
+mas "amphetamine", id: 937984704
+mas "spark", id: 1176895641
