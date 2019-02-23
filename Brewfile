@@ -13,6 +13,7 @@ brew "the_silver_searcher"
 brew "rbenv"
 brew "pyenv"
 brew "nvm"
+brew "yarn"
 
 # Dev apps
 cask "iterm2"
