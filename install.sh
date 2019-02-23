@@ -18,3 +18,6 @@ brew bundle install --file ./Brewfile --describe || true
 
 # Configure apps
 sh ./configure.sh
+
+# Configure SSH
+ssh-keygen -t rsa -b 4096 -C "fu7iin@gmail.com"
