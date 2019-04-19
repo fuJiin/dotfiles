@@ -37,3 +37,7 @@ cask "soundcleod"
 brew "mas"
 mas "amphetamine", id: 937984704
 mas "spark", id: 1176895641
+
+# VPN
+# https://github.com/trailofbits/algo
+brew "wireguard-tools"
