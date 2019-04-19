@@ -86,6 +86,9 @@ alias lx="lein exec"
 # Lein CLJSBuild
 alias ljs="lein cljsbuild"
 
+# Shadow CLJS
+alias sdw="shadow-cljs"
+
 # Misc
 #
 alias flushdns="dscacheutil -flushcache"
