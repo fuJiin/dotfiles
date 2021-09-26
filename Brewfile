@@ -1,9 +1,9 @@
 cask_args appdir: "/Applications"
-tap "caskroom/cask"
+tap "homebrew/cask"
 
 # Editor
-tap "d12frosted/emacs-plus"
-brew "emacs-plus", args: ["HEAD", "with-natural-title-bars"], link: true
+tap "emacs"
+cask "emacs"
 
 # General util
 brew "hub"
@@ -25,7 +25,7 @@ cask "teensy"
 
 # Productivity apps
 cask "google-chrome"
-cask "evernote"
+cask "brave-browser"
 cask "lastpass"
 cask "slack"
 
@@ -36,8 +36,6 @@ cask "soundcleod"
 # App store apps
 brew "mas"
 mas "amphetamine", id: 937984704
-mas "spark", id: 1176895641
 
 # VPN
-# https://github.com/trailofbits/algo
-brew "wireguard-tools"
+cask "expressvpn"
