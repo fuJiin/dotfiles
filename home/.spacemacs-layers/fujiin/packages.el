@@ -22,6 +22,7 @@
       (pop-rocks-theme :location local)
 
       solidity-mode
+      vyper-mode
       ))
 
 ;; List of packages to exclude.
@@ -46,6 +47,8 @@
 (defun fujiin/init-solidity-mode ()
   (add-to-list 'auto-mode-alist
                '("\\.sol\\'" . solidity-mode)))
+
+(defun fujiin/init-vyper-mode ())
 
 ;; Often the body of an initialize function uses `use-package'
 ;; For more info on `use-package', see readme:
