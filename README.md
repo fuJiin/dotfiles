@@ -2,7 +2,7 @@ My dotfiles. Install with [homeshick](https://github.com/andsens/homeshick). See
 
 ### Installation
 
-`bash <(curl -s https://raw.github.com/fuJiin/dotfiles/.install.sh)`
+`bash <(curl -s https://raw.githubusercontent.com/fuJiin/dotfiles/master/install.sh)`
 
 ### Usage
 
