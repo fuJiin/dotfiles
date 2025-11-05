@@ -25,7 +25,13 @@ alias gl="git log --pretty=oneline --abbrev-commit --graph"
 alias gcp="git cherry-pick"
 
 # From http://stackoverflow.com/questions/17983068/delete-local-git-branches-after-deleting-them-on-the-remote-repo
-alias gbp='git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d'
+# Deletes branches that are gone from remote AND branches that are merged (excluding current and master)
+gbp() {
+  # Delete branches that are gone from remote (force delete)
+  git branch -vv | awk '/: gone]/ {print $1}' | xargs git branch -D 2>/dev/null
+  # Delete merged branches (safe delete, excluding current and master)
+  git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d 2>/dev/null
+}
 
 # Update master and prune both remove and local branches
 alias gpp="git checkout master && git pull && git fetch -p && gbp"
@@ -70,6 +76,7 @@ alias jk="jekyll"
 # Install via Anaconda or Homebrew
 #
 alias ipn="ipython notebook"
+alias pa="source env/bin/activate"
 
 # XCode
 #
