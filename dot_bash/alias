@@ -14,16 +14,16 @@
 #
 alias cz="chezmoi"
 
+# Lazygit
+# Install: brew install lazygit
+#
+alias lg="lazygit"
+
 # Git
 # Install: brew install git
 #
 alias gl="git log --pretty=oneline --abbrev-commit --graph"
 alias gcp="git cherry-pick"
-
-# Lazygit
-# Install: brew install lazygit
-#
-alias lg="lazygit"
 
 # From http://stackoverflow.com/questions/17983068/delete-local-git-branches-after-deleting-them-on-the-remote-repo
 # Deletes branches that are gone from remote AND branches that are merged (excluding current and master)
@@ -58,18 +58,6 @@ alias gt="ghostty"
 if [ -f ~/.github/api_token.txt ]; then
   export HOMEBREW_GITHUB_API_TOKEN=$(cat ~/.github/api_token.txt)
 fi
-
-# Ruby
-# Install via RVM (https://rvm.io/)
-#
-# Rails
-alias bx="bundle exec"
-
-# Padrino
-alias px="padrino"
-
-# Jekyll
-alias jk="jekyll"
 
 # Python
 # Install via Anaconda or Homebrew
