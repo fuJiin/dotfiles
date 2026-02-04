@@ -43,21 +43,21 @@ Can be an integer to determine the exact padding."
   "A light theme derived from Pop Rocks."
 
   ;; name        default   256           16
-  ((bg         '("#fafafa" "#fafafa"     "white"        ))
+  ((bg         '("#faf8f5" "#faf8f5"     "white"        ))
    (fg         '("#383838" "#383838"     "black"        ))
 
    ;; These are off-color variants of bg/fg, used primarily for `solaire-mode',
    ;; but can also be useful as a basis for subtle highlights (e.g. for hl-line
    ;; or region), especially when paired with the `doom-darken', `doom-lighten',
    ;; and `doom-blend' helper functions.
-   (bg-alt     '("#f0f0f0" "#f0f0f0"     "white"        ))
+   (bg-alt     '("#f0eee9" "#f0eee9"     "white"        ))
    (fg-alt     '("#5a5a5a" "#5a5a5a"     "brightblack"  ))
 
    ;; These should represent a spectrum from bg to fg, where base0 is a starker
    ;; temporary background and base8 is a strong foreground.
-   (base0      '("#ffffff" "#ffffff"     "white"        ))
-   (base1      '("#f5f5f5" "#f5f5f5"     "brightwhite"  ))
-   (base2      '("#eeeeee" "#eeeeee"     "brightwhite"  ))
+   (base0      '("#fffdf8" "#fffdf8"     "white"        ))
+   (base1      '("#f5f3ee" "#f5f3ee"     "brightwhite"  ))
+   (base2      '("#eeebe6" "#eeebe6"     "brightwhite"  ))
    (base3      '("#e0e0e0" "#e0e0e0"     "brightwhite"  ))
    (base4      '("#c0c0c0" "#c0c0c0"     "brightwhite"  ))
    (base5      '("#8a8c8d" "#8a8c8d"     "brightblack"  ))
