@@ -1,3 +1,4 @@
+#!/bin/bash
 # Link Spacemacs
 if [ ! -d ~/.emacs.d ]; then
     git clone https://github.com/syl20bnr/spacemacs ~/.emacs.d
@@ -6,7 +7,9 @@ fi
 
 # Set up iTerm2
 # http://stratus3d.com/blog/2015/02/28/sync-iterm2-profile-with-dotfiles-repository/
-defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${HOME}/.homesick/repos/dotfiles/configs/com.googlecode.iterm2.plist"
+# Note: chezmoi source dir is typically ~/.local/share/chezmoi
+CHEZMOI_SOURCE="$(chezmoi source-path 2>/dev/null || echo "${HOME}/.local/share/chezmoi")"
+defaults write com.googlecode.iterm2.plist PrefsCustomFolder -string "${CHEZMOI_SOURCE}/configs"
 defaults write com.googlecode.iterm2.plist LoadPrefsFromCustomFolder -bool true
 
 # Basic bash_profile setup
