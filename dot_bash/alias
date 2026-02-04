@@ -9,14 +9,10 @@
 #
 # ======= #
 
-# Homeshick
-# Install: brew install homeshick
+# Chezmoi
+# Install: brew install chezmoi
 #
-alias hs="homeshick"
-
-# See homeshick caveats in eomebrew
-export HOMESHICK_DIR=/usr/local/opt/homeshick
-source "/usr/local/opt/homeshick/homeshick.sh"
+alias cz="chezmoi"
 
 # Git
 # Install: brew install git
@@ -24,13 +20,18 @@ source "/usr/local/opt/homeshick/homeshick.sh"
 alias gl="git log --pretty=oneline --abbrev-commit --graph"
 alias gcp="git cherry-pick"
 
+# Lazygit
+# Install: brew install lazygit
+#
+alias lg="lazygit"
+
 # From http://stackoverflow.com/questions/17983068/delete-local-git-branches-after-deleting-them-on-the-remote-repo
 # Deletes branches that are gone from remote AND branches that are merged (excluding current and master)
 gbp() {
   # Delete branches that are gone from remote (force delete)
   git branch -vv | awk '/: gone]/ {print $1}' | xargs git branch -D 2>/dev/null
-  # Delete merged branches (safe delete, excluding current and master)
-  git branch --merged | grep -Ev "(\*|master)" | xargs -n 1 git branch -d 2>/dev/null
+  # Delete merged branches (safe delete, excluding current, main, and develop)
+  git branch --merged | grep -Ev "(\*|main|develop)" | xargs -n 1 git branch -d 2>/dev/null
 }
 
 # Update master and prune both remove and local branches
@@ -53,6 +54,10 @@ function cch () {
 }
 alias tmx="tmux -CC attach || tmux -CC"
 
+# Ghostty
+# Install: brew install ghostty
+#
+alias gt="ghostty"
 
 # Check to see if ~/.github/api_token.txt is defined.
 # Exports global if it exists
