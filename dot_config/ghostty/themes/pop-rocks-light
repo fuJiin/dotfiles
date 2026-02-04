@@ -1,11 +1,11 @@
 # Pop Rocks Light theme for Ghostty
 # Light variant derived from Pop Rocks
 
-background = #fafafa
+background = #faf8f5
 foreground = #383838
 cursor-color = #171717
 selection-background = #d0d5f0
-selection-foreground = #171717
+selection-foreground = cell-foreground
 
 # Normal colors (0-7) - darkened for light background
 palette = 0=#e0e0e0
