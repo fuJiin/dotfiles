@@ -45,4 +45,4 @@ mouse-hide-while-typing = true
 background-opacity = 1
 
 # Theme: auto-switch between light and dark based on macOS appearance
-theme = dark:iterm-dark,light:iterm-light
+theme = dark:pop-rocks-dark,light:pop-rocks-light

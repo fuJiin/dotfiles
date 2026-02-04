@@ -1,0 +1,28 @@
+# Pop Rocks Dark theme for Ghostty
+# Based on hardcore.itermcolors / Pop Rocks
+
+background = #171717
+foreground = #b0b0b0
+cursor-color = #ffffff
+selection-background = #464f94
+selection-foreground = #ffffff
+
+# Normal colors (0-7)
+palette = 0=#1b1d1e
+palette = 1=#f9267b
+palette = 2=#a6e22a
+palette = 3=#fd971f
+palette = 4=#66d9ef
+palette = 5=#9e6ffe
+palette = 6=#5e7175
+palette = 7=#ccccc6
+
+# Bright colors (8-15)
+palette = 8=#505354
+palette = 9=#ff669d
+palette = 10=#beed5f
+palette = 11=#e6db74
+palette = 12=#66d9ef
+palette = 13=#9e6ffe
+palette = 14=#a3babf
+palette = 15=#f8f8f2
