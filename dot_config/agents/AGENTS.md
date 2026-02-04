@@ -1,10 +1,10 @@
-# Claude Code User Configuration
+# AI Agent Configuration
 
 ## Project Context Management
 
-**At the start of every session**, check if `.context/CONTEXT.md` exists in the project root. If it does, read it to restore context from previous sessions.
+**At the start of every session**, check if `.agents/CONTEXT.md` exists in the project root. If it does, read it to restore context from previous sessions.
 
-### `.context/CONTEXT.md`
+### `.agents/CONTEXT.md`
 
 A single file that captures project context for resuming work across sessions (and across different AI tools). This file should be:
 - **Gitignored** - it's a working document, not part of the codebase
@@ -13,7 +13,7 @@ A single file that captures project context for resuming work across sessions (a
 
 #### What to include:
 - **Project context**: Brief overview, key technologies
-- **Current focus**: What work is in progress, which branch(es)
+- **Current focus**: What work is in progress on which branch(es)
 - **Key decisions**: Important choices made and why
 - **Next steps**: Concrete tasks to pick up
 
@@ -50,5 +50,5 @@ A single file that captures project context for resuming work across sessions (a
 
 Add to `.gitignore`:
 ```
-.context/
+.agents/
 ```
