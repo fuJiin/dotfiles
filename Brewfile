@@ -1,41 +1,30 @@
 cask_args appdir: "/Applications"
-tap "homebrew/cask"
+
+# === CORE TOOLS ===
+
+# Terminal
+cask "ghostty"
 
 # Editor
-tap "emacs"
-cask "emacs"
+tap "d12frosted/emacs-plus"
+brew "emacs-plus", args: ["with-native-comp"]
 
-# General util
-brew "hub"
-brew "the_silver_searcher"
+# Git
+brew "lazygit"
+brew "gh"
 
-# Version controls
-brew "rbenv"
+# === QoL APPS ===
+
+cask "alfred"
+cask "1password"
+cask "rectangle"
+cask "spotify"
+
+# Keep system awake
+brew "mas"
+mas "Amphetamine", id: 937984704
+
+# === LANGUAGE RUNTIMES (actively used) ===
+
 brew "pyenv"
 brew "nvm"
-brew "yarn"
-
-# Dev apps
-cask "iterm2"
-cask "spectacle"
-cask "rowanj-gitx"
-cask "alfred"
-cask "flux"
-cask "teensy"
-
-# Productivity apps
-cask "google-chrome"
-cask "brave-browser"
-cask "lastpass"
-cask "slack"
-
-# Music apps
-cask "spotify"
-cask "soundcleod"
-
-# App store apps
-brew "mas"
-mas "amphetamine", id: 937984704
-
-# VPN
-cask "expressvpn"
