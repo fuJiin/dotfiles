@@ -21,6 +21,9 @@ quick-terminal-size = 100%,100%
 quick-terminal-autohide = true
 quick-terminal-animation-duration = 0.2
 
+# Shell
+command = /usr/local/bin/fish
+
 # Terminal settings
 term = xterm-256color
 scrollback-limit = 1000

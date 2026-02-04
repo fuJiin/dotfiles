@@ -24,7 +24,11 @@ cask "spotify"
 brew "mas"
 mas "Amphetamine", id: 937984704
 
+# === SHELL ===
+
+brew "fish"
+
 # === LANGUAGE RUNTIMES (actively used) ===
 
 brew "pyenv"
-brew "nvm"
+brew "fnm"
