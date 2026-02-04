@@ -1,0 +1,45 @@
+# Ghostty config translated from iTerm2
+# Generated: 2026-02-02
+
+# Font settings
+font-family = Monaco
+font-size = 12
+
+# Window settings
+window-height = 25
+window-width = 80
+
+# Fullscreen (non-native matches iTerm2's "fullscreen window" style)
+# Set fullscreen = true to start in fullscreen
+macos-non-native-fullscreen = true
+
+# Quick Terminal (hotkey window) - Cmd+Ctrl+Space like iTerm2
+# Requires: System Settings > Privacy & Security > Accessibility permission for Ghostty
+keybind = global:cmd+shift+space=toggle_quick_terminal
+quick-terminal-position = top
+quick-terminal-size = 100%,100%
+quick-terminal-autohide = true
+quick-terminal-animation-duration = 0.2
+
+# Terminal settings
+term = xterm-256color
+scrollback-limit = 1000
+
+# Cursor settings (non-blinking)
+cursor-style-blink = false
+
+# Bell settings (border = visual flash, no-audio = silent)
+bell-features = no-audio,border,attention,title
+
+# Option key behavior
+# iTerm2: Left Option sends ESC+ (meta), Right Option is normal
+macos-option-as-alt = left
+
+# Mouse
+mouse-hide-while-typing = true
+
+# Background (pure black, no transparency)
+background-opacity = 1
+
+# Theme: auto-switch between light and dark based on macOS appearance
+theme = dark:iterm-dark,light:iterm-light

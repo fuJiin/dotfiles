@@ -34,14 +34,8 @@ gbp() {
   git branch --merged | grep -Ev "(\*|main|develop)" | xargs -n 1 git branch -d 2>/dev/null
 }
 
-# Update master and prune both remove and local branches
-alias gpp="git checkout master && git pull && git fetch -p && gbp"
-
-# Github
-# Install: brew install hub
-#
-alias gpr="git pull-request"
-command -v hub >/dev/null 2>&1 && eval "$(hub alias -s)"
+# Update main and prune both remote and local branches
+alias gpp="git checkout main && git pull && git fetch -p && gbp"
 
 # Docker
 alias dx="docker exec"
