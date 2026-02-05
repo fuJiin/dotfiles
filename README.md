@@ -13,17 +13,23 @@ Or if chezmoi is already installed:
 chezmoi init --apply fuJiin/dotfiles
 ```
 
-### Usage
+### Post-install
 
-Most of the packages should work out of the box if the relevant software is installed. i.e. Spacemacs will use .spacemacs and [Leiningen](http://leiningen.org/) will use .lein.
+Set fish as the default shell (requires password):
 
-The exception are the bash files, which are found inside `~/.bash`. The current setup leaves `~/.bash_profile` (or `~/.bashrc`) alone, and defers to the user to source the bash dotfiles they want. Link to these directly by calling `source ~/.bash/xyz`.
+```bash
+# Add fish to allowed shells (if not already present)
+grep -q /usr/local/bin/fish /etc/shells || echo /usr/local/bin/fish | sudo tee -a /etc/shells
+
+# Set as default shell
+chsh -s /usr/local/bin/fish
+```
 
 ### Common Commands
 
 ```bash
 chezmoi cd                  # Go to source directory
-chezmoi edit ~/.bashrc      # Edit a managed file
+chezmoi edit <file>         # Edit a managed file
 chezmoi diff                # Preview changes
 chezmoi apply               # Apply changes
 chezmoi update              # Pull latest and apply

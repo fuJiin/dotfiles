@@ -23,3 +23,6 @@ fnm env | source
 # bun
 set -x BUN_INSTALL $HOME/.bun
 fish_add_path $BUN_INSTALL/bin
+
+# Foundry (Forge, Cast, Anvil)
+fish_add_path $HOME/.foundry/bin
