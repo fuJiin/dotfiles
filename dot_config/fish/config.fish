@@ -1,3 +1,6 @@
+# Disable greeting
+set -g fish_greeting
+
 # Colors
 set -x CLICOLOR 1
 set -x LSCOLORS GxFxCxDxBxegedabagaced
