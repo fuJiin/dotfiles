@@ -8,6 +8,10 @@ set -x LSCOLORS GxFxCxDxBxegedabagaced
 # Secrets (API keys, tokens, etc.)
 test -f ~/.secrets; and source ~/.secrets
 
+# Editor (prefer emacsclient if server is running, fall back to emacs)
+set -x EDITOR "emacsclient -t -a emacs"
+set -x VISUAL "emacsclient -c -a emacs"
+
 # PATH
 fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
