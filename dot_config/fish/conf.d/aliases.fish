@@ -31,6 +31,10 @@ alias lx "lein exec"
 alias ljs "lein cljsbuild"
 alias sdw "shadow-cljs"
 
+# Claude
+alias cc "claude"
+alias ccd "claude --dangerously-skip-permissions"
+
 # Misc
 alias flushdns "dscacheutil -flushcache"
 
