@@ -3,7 +3,7 @@
 
 background = #faf8f5
 foreground = #383838
-cursor-color = #171717
+cursor-color = #7b5fc9
 selection-background = #d0d5f0
 selection-foreground = cell-foreground
 

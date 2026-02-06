@@ -29,6 +29,8 @@ scrollback-limit = 1000
 
 # Cursor settings (non-blinking)
 cursor-style-blink = false
+unfocused-split-opacity = 0.78
+unfocused-split-fill = #000000
 
 # Bell settings (border = visual flash, no-audio = silent)
 bell-features = no-audio,border,attention,title
