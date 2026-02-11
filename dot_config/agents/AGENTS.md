@@ -46,6 +46,13 @@ A single file that captures project context for resuming work across sessions (a
 - [ ] Concrete task 2
 ```
 
+## Claude Code Skills
+
+When creating or modifying Claude Code customizations (slash commands, skills, etc.):
+
+- **Always use skills** (`~/.claude/skills/<name>/SKILL.md`), never commands (`~/.claude/commands/`). Skills support auto-invocation, frontmatter, and supporting files.
+- **Always manage through chezmoi.** Edit files in the chezmoi source directory (`dot_claude/skills/`) and run `chezmoi apply`. Never create or edit skills directly in `~/.claude/skills/`.
+
 ## Git Integration
 
 Add to `.gitignore`:
