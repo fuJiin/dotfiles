@@ -1,0 +1,36 @@
+#!/bin/bash
+# Read existing settings from stdin, merge statusLine config
+input=$(cat)
+if [ -z "$input" ] || [ "$input" = "{}" ]; then
+    input='{}'
+fi
+echo "$input" | jq '. + {
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "hooks": {
+    "Notification": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e '\''display notification \"Claude Code needs your attention\" with title \"Claude Code\" sound name \"Glass\"'\''"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "osascript -e '\''display notification \"Task complete\" with title \"Claude Code\" sound name \"Glass\"'\''"
+          }
+        ]
+      }
+    ]
+  }
+}'
