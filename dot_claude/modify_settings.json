@@ -16,7 +16,7 @@ echo "$input" | jq '. + {
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e '\''display notification \"Claude Code needs your attention\" with title \"Claude Code\" sound name \"Glass\"'\''"
+            "command": "terminal-notifier -title \"Claude Code\" -message \"Needs your attention\" -sound Glass"
           }
         ]
       }
@@ -27,7 +27,7 @@ echo "$input" | jq '. + {
         "hooks": [
           {
             "type": "command",
-            "command": "osascript -e '\''display notification \"Task complete\" with title \"Claude Code\" sound name \"Glass\"'\''"
+            "command": "terminal-notifier -title \"Claude Code\" -message \"Task complete\" -sound Glass"
           }
         ]
       }
