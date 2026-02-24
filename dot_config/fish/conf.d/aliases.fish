@@ -35,6 +35,15 @@ alias sdw "shadow-cljs"
 alias cc "claude"
 alias ccd "claude --dangerously-skip-permissions"
 
+# Search
+if command -q rg
+    alias grep "rg --hidden"
+end
+
+if command -q fd
+    alias find "fd"
+end
+
 # Misc
 alias flushdns "dscacheutil -flushcache"
 
