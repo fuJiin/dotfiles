@@ -29,6 +29,11 @@ mas "Amphetamine", id: 937984704
 
 brew "fish"
 
+# === SEARCH ===
+
+brew "ripgrep"
+brew "fd"
+
 # === LANGUAGE RUNTIMES (actively used) ===
 
 brew "pyenv"
