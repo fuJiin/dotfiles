@@ -27,6 +27,9 @@ end
 test -f $HOME/.cargo/env.fish; and source $HOME/.cargo/env.fish
 
 # fnm (replaces nvm)
+if test -d $HOME/.local/share/fnm
+    fish_add_path $HOME/.local/share/fnm
+end
 if command -q fnm
     fnm env | source
 end

@@ -34,6 +34,10 @@ brew "fish"
 brew "ripgrep"
 brew "fd"
 
+# === CLOUD / INFRA ===
+
+brew "hcloud"
+
 # === LANGUAGE RUNTIMES (actively used) ===
 
 brew "pyenv"
