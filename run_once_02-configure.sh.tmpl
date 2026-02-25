@@ -1,10 +1,11 @@
 #!/bin/bash
-
 # Clone Doom Emacs if not present
 if [ ! -d ~/.emacs.d ]; then
     git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
     ~/.emacs.d/bin/doom install
 fi
 
+{{ if eq .chezmoi.os "darwin" -}}
 # Ensure config directories exist
 mkdir -p ~/.config/ghostty
+{{ end -}}

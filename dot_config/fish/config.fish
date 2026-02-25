@@ -17,19 +17,27 @@ fish_add_path $HOME/.emacs.d/bin
 fish_add_path $HOME/.local/bin
 
 # pyenv
-set -x PYENV_ROOT $HOME/.pyenv
-fish_add_path $PYENV_ROOT/bin
-status is-interactive; and pyenv init --path | source
+if test -d $HOME/.pyenv
+    set -x PYENV_ROOT $HOME/.pyenv
+    fish_add_path $PYENV_ROOT/bin
+    status is-interactive; and pyenv init --path | source
+end
 
 # Rust
 test -f $HOME/.cargo/env.fish; and source $HOME/.cargo/env.fish
 
 # fnm (replaces nvm)
-fnm env | source
+if command -q fnm
+    fnm env | source
+end
 
 # bun
-set -x BUN_INSTALL $HOME/.bun
-fish_add_path $BUN_INSTALL/bin
+if test -d $HOME/.bun
+    set -x BUN_INSTALL $HOME/.bun
+    fish_add_path $BUN_INSTALL/bin
+end
 
 # Foundry (Forge, Cast, Anvil)
-fish_add_path $HOME/.foundry/bin
+if test -d $HOME/.foundry/bin
+    fish_add_path $HOME/.foundry/bin
+end

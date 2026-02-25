@@ -1,0 +1,8 @@
+{{- if ne .chezmoi.os "darwin" }}
+# macOS-only: Homebrew package list
+Brewfile
+
+# macOS-only: desktop GUI terminal
+.config/ghostty
+.config/ghostty/**
+{{- end }}

@@ -1,0 +1,41 @@
+#!/bin/bash
+{{ if eq .chezmoi.os "darwin" -}}
+# Install Homebrew
+if ! command -v brew &> /dev/null; then
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+# Update Git
+brew install git
+
+{{ else if eq .chezmoi.os "linux" -}}
+# Core packages
+sudo apt-get update
+sudo apt-get install -y \
+    git \
+    emacs \
+    fish \
+    tmux \
+    mosh \
+    curl \
+    jq \
+    ripgrep \
+    fd-find \
+    build-essential
+
+# fd-find installs as fdfind on Ubuntu; symlink to fd
+if command -v fdfind &> /dev/null && ! command -v fd &> /dev/null; then
+    sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd
+fi
+
+# Set fish as default shell
+if [ "$SHELL" != "$(command -v fish)" ]; then
+    command -v fish | sudo tee -a /etc/shells
+    sudo chsh -s "$(command -v fish)" "$(whoami)"
+fi
+
+{{ end -}}
+# Configure SSH
+if [ ! -f ~/.ssh/id_rsa ]; then
+    ssh-keygen -t rsa -b 4096 -C "fu7iin@gmail.com"
+fi
