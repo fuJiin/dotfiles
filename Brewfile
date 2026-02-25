@@ -17,7 +17,7 @@ brew "gh"
 
 cask "alfred"
 cask "1password"
-cask "macdown"
+cask "macdown-3000"
 cask "rectangle"
 cask "spotify"
 

@@ -4,6 +4,7 @@ input=$(cat)
 if [ -z "$input" ] || [ "$input" = "{}" ]; then
     input='{}'
 fi
+{{ if eq .chezmoi.os "darwin" -}}
 echo "$input" | jq '. + {
   "statusLine": {
     "type": "command",
@@ -34,3 +35,11 @@ echo "$input" | jq '. + {
     ]
   }
 }'
+{{ else -}}
+echo "$input" | jq '. + {
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  }
+}'
+{{ end -}}

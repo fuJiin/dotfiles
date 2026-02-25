@@ -36,14 +36,14 @@
 (setq doom-theme 'doom-pop-rocks)
 
 ;; Auto-switch theme based on macOS appearance
-(defun my/apply-theme (appearance)
-  "Apply theme based on macOS APPEARANCE (dark or light)."
-  (mapc #'disable-theme custom-enabled-themes)
-  (pcase appearance
-    ('dark (load-theme 'doom-pop-rocks t))
-    ('light (load-theme 'doom-pop-rocks-light t))))
-
-(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+(when (boundp 'ns-system-appearance-change-functions)
+  (defun my/apply-theme (appearance)
+    "Apply theme based on macOS APPEARANCE (dark or light)."
+    (mapc #'disable-theme custom-enabled-themes)
+    (pcase appearance
+      ('dark (load-theme 'doom-pop-rocks t))
+      ('light (load-theme 'doom-pop-rocks-light t))))
+  (add-hook 'ns-system-appearance-change-functions #'my/apply-theme))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.

@@ -11,10 +11,17 @@ alias gpp "git checkout main && git pull && git fetch -p && gbp"
 alias dx "docker exec"
 
 # tmux
-alias tmx "tmux -CC attach || tmux -CC"
+if test (uname) = Darwin
+    # macOS: use -CC for Ghostty/iTerm2 integration
+    alias tmx "tmux -CC attach || tmux -CC"
+else
+    alias tmx "tmux attach || tmux"
+end
 
 # Ghostty
-alias gt "ghostty"
+if command -q ghostty
+    alias gt "ghostty"
+end
 
 # Python
 alias python "python3"
@@ -22,14 +29,20 @@ alias pip "pip3"
 alias ipn "ipython notebook"
 alias pa "source env/bin/activate.fish"
 
-# XCode
-alias xc "open ./*.xcworkspace"
+# XCode (macOS only)
+if test (uname) = Darwin
+    alias xc "open ./*.xcworkspace"
+end
 
 # Clojure
-alias lrx "test -f ./.nrepl-port; and lein repl :connect; or lein repl"
-alias lx "lein exec"
-alias ljs "lein cljsbuild"
-alias sdw "shadow-cljs"
+if command -q lein
+    alias lrx "test -f ./.nrepl-port; and lein repl :connect; or lein repl"
+    alias lx "lein exec"
+    alias ljs "lein cljsbuild"
+end
+if command -q shadow-cljs
+    alias sdw "shadow-cljs"
+end
 
 # Claude
 alias cc "claude"
@@ -44,12 +57,13 @@ if command -q fd
     alias find "fd"
 end
 
-# Misc
-alias flushdns "dscacheutil -flushcache"
+# macOS-only utilities
+if test (uname) = Darwin
+    alias flushdns "dscacheutil -flushcache"
 
-# GitHub API token
-if test -f ~/.github/api_token.txt
-    set -x HOMEBREW_GITHUB_API_TOKEN (cat ~/.github/api_token.txt)
+    if test -f ~/.github/api_token.txt
+        set -x HOMEBREW_GITHUB_API_TOKEN (cat ~/.github/api_token.txt)
+    end
 end
 
 # Delete branches that are gone from remote AND merged branches
@@ -62,7 +76,7 @@ end
 
 # SSH with tmux attach
 function cch
-    ssh $argv -t 'tmux -CC attach || tmux -CC'
+    ssh $argv -t 'tmux attach || tmux'
 end
 
 # Find PID taking up a port

@@ -3,3 +3,7 @@
 	name = Elpizo Choi
 [init]
 	defaultBranch = main
+{{ if eq .chezmoi.os "darwin" -}}
+[credential]
+	helper = osxkeychain
+{{ end -}}
