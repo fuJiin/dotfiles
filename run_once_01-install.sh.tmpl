@@ -37,5 +37,5 @@ fi
 {{ end -}}
 # Configure SSH
 if [ ! -f ~/.ssh/id_rsa ]; then
-    ssh-keygen -t rsa -b 4096 -C "fu7iin@gmail.com"
+    ssh-keygen -t rsa -b 4096 -C "fu7iin@gmail.com" -N "" -f ~/.ssh/id_rsa
 fi
