@@ -9,19 +9,21 @@ fi
 brew install git
 
 {{ else if eq .chezmoi.os "linux" -}}
-# Core packages
-sudo apt-get update
-sudo apt-get install -y \
-    git \
-    emacs-nox \
-    fish \
-    tmux \
-    mosh \
-    curl \
-    jq \
-    ripgrep \
-    fd-find \
-    build-essential
+# Skip apt setup if packages are already installed (e.g. imir baked snapshot)
+if ! command -v fish &> /dev/null || ! command -v rg &> /dev/null; then
+    sudo apt-get update
+    sudo apt-get install -y \
+        git \
+        emacs-nox \
+        fish \
+        tmux \
+        mosh \
+        curl \
+        jq \
+        ripgrep \
+        fd-find \
+        build-essential
+fi
 
 # fd-find installs as fdfind on Ubuntu; symlink to fd
 if command -v fdfind &> /dev/null && ! command -v fd &> /dev/null; then
