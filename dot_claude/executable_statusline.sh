@@ -10,8 +10,8 @@ BAR_WIDTH=10
 FILLED=$((PCT * BAR_WIDTH / 100))
 EMPTY=$((BAR_WIDTH - FILLED))
 BAR=""
-[ "$FILLED" -gt 0 ] && BAR=$(printf "%${FILLED}s" | tr ' ' '▓')
-[ "$EMPTY" -gt 0 ] && BAR="${BAR}$(printf "%${EMPTY}s" | tr ' ' '░')"
+[ "$FILLED" -gt 0 ] && BAR=$(printf "%${FILLED}s" | tr ' ' '#')
+[ "$EMPTY" -gt 0 ] && BAR="${BAR}$(printf "%${EMPTY}s" | tr ' ' '-')"
 
 # Color based on context usage
 RED='\033[31m'
