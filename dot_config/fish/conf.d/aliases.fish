@@ -71,7 +71,7 @@ function gbp
     # Delete branches that are gone from remote (force delete)
     git branch -vv | awk '/: gone]/ {print $1}' | xargs git branch -D 2>/dev/null
     # Delete merged branches (safe delete, excluding current, main, and develop)
-    git branch --merged | grep -Ev '(\*|main|develop)' | xargs -n 1 git branch -d 2>/dev/null
+    git branch --merged | command grep -Ev '(\*|main|develop)' | xargs -n 1 git branch -d 2>/dev/null
 end
 
 # SSH with tmux attach
@@ -81,5 +81,5 @@ end
 
 # Find PID taking up a port
 function port
-    lsof -n -i:$argv[1] | grep LISTEN
+    lsof -n -i:$argv[1] | command grep LISTEN
 end
