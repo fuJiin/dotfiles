@@ -83,3 +83,15 @@ end
 function port
     lsof -n -i:$argv[1] | command grep LISTEN
 end
+
+# cd to a git worktree by branch name
+function cdwt
+    set -l dir (git worktree list | command grep "\\[$argv[1]\\]" | awk '{print $1}')
+    if test -n "$dir"
+        cd $dir
+    else
+        echo "No worktree found for branch '$argv[1]'" >&2
+        git worktree list
+        return 1
+    end
+end
