@@ -85,11 +85,6 @@
 (use-package! claude-code
   :config
   (claude-code-mode)
-
-  ;; Register Claude buffers with Doom's popup system so they appear in buffer
-  ;; lists (SPC b b) and can be repositioned/resized like any other window.
-  (set-popup-rule! "^\\*claude:" :side 'right :size 0.4 :quit nil :select t :ttl nil)
-
   (map! :leader
         (:prefix ("a" . "ai")
          :desc "Claude"                  "a" #'claude-code
