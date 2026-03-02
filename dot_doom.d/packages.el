@@ -50,3 +50,9 @@
 ;(unpin! t)
 ;
 (package! vyper-mode)
+
+;; Claude Code
+(package! eat)
+(package! inheritenv)
+(package! claude-code
+  :recipe (:host github :repo "stevemolitor/claude-code.el"))
