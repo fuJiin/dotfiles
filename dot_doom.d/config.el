@@ -84,19 +84,22 @@
 ;; Claude Code
 (use-package! claude-code
   :config
-  (claude-code-mode)
-  (map! :leader
-        (:prefix ("a" . "ai")
-         :desc "Claude"                  "a" #'claude-code
-         :desc "Toggle Claude"           "t" #'claude-code-toggle
-         :desc "Send region"             "r" #'claude-code-send-region
-         :desc "Send with context"       "x" #'claude-code-send-command-with-context
-         :desc "Send command"            "s" #'claude-code-send-command
-         :desc "Send buffer file"        "o" #'claude-code-send-buffer-file
-         :desc "Fix error at point"      "e" #'claude-code-fix-error-at-point
-         :desc "Continue conversation"   "c" #'claude-code-continue
-         :desc "Resume session"          "R" #'claude-code-resume
-         :desc "Accept (return)"         "y" #'claude-code-send-return
-         :desc "Reject (escape)"         "n" #'claude-code-send-escape
-         :desc "Kill Claude"             "k" #'claude-code-kill
-         :desc "Command menu"            "m" #'claude-code-transient)))
+  (claude-code-mode))
+
+(map! :leader
+      :desc "ai" "a" nil)
+(map! :leader
+      (:prefix ("a" . "ai")
+       :desc "Claude"                  "a" #'claude-code
+       :desc "Toggle Claude"           "t" #'claude-code-toggle
+       :desc "Send region"             "r" #'claude-code-send-region
+       :desc "Send with context"       "x" #'claude-code-send-command-with-context
+       :desc "Send command"            "s" #'claude-code-send-command
+       :desc "Send buffer file"        "o" #'claude-code-send-buffer-file
+       :desc "Fix error at point"      "e" #'claude-code-fix-error-at-point
+       :desc "Continue conversation"   "c" #'claude-code-continue
+       :desc "Resume session"          "R" #'claude-code-resume
+       :desc "Accept (return)"         "y" #'claude-code-send-return
+       :desc "Reject (escape)"         "n" #'claude-code-send-escape
+       :desc "Kill Claude"             "k" #'claude-code-kill
+       :desc "Command menu"            "m" #'claude-code-transient))
