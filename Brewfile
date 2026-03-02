@@ -1,44 +1,46 @@
-cask_args appdir: "/Applications"
+# === CROSS-PLATFORM ===
 
-# === CORE TOOLS ===
+# Shell
+brew "fish"
 
-# Terminal
-cask "ghostty"
-
-# Editor
-tap "d12frosted/emacs-plus"
-brew "emacs-plus", args: ["with-native-comp"]
+# Search
+brew "ripgrep"
+brew "fd"
 
 # Git
 brew "lazygit"
 brew "gh"
 
-# === QoL APPS ===
+# Dev tools
+brew "worktrunk"
 
-cask "alfred"
-cask "1password"
-cask "macdown-3000"
-cask "rectangle"
-cask "spotify"
-
-# Keep system awake
-brew "mas"
-mas "Amphetamine", id: 937984704
-
-# === SHELL ===
-
-brew "fish"
-
-# === SEARCH ===
-
-brew "ripgrep"
-brew "fd"
-
-# === CLOUD / INFRA ===
-
+# Cloud / Infra
 brew "hcloud"
 
-# === LANGUAGE RUNTIMES (actively used) ===
-
+# Language runtimes
 brew "pyenv"
 brew "fnm"
+
+# === macOS ONLY ===
+
+if OS.mac?
+  cask_args appdir: "/Applications"
+
+  # Terminal
+  cask "ghostty"
+
+  # Editor
+  tap "d12frosted/emacs-plus"
+  brew "emacs-plus", args: ["with-native-comp"]
+
+  # QoL Apps
+  cask "alfred"
+  cask "1password"
+  cask "macdown-3000"
+  cask "rectangle"
+  cask "spotify"
+
+  # Keep system awake
+  brew "mas"
+  mas "Amphetamine", id: 937984704
+end
