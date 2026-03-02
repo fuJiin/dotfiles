@@ -49,11 +49,6 @@
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
-
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
 ;;
@@ -90,19 +85,23 @@
 (use-package! claude-code
   :config
   (claude-code-mode)
+
+  ;; Register Claude buffers with Doom's popup system so they appear in buffer
+  ;; lists (SPC b b) and can be repositioned/resized like any other window.
+  (set-popup-rule! "^\\*claude:" :side 'right :size 0.4 :quit nil :select t :ttl nil)
+
   (map! :leader
-        (:prefix ("o" . "open")
-         (:prefix ("a" . "ai")
-          :desc "Claude"                  "a" #'claude-code
-          :desc "Toggle Claude"           "t" #'claude-code-toggle
-          :desc "Send region"             "r" #'claude-code-send-region
-          :desc "Send with context"       "x" #'claude-code-send-command-with-context
-          :desc "Send command"            "s" #'claude-code-send-command
-          :desc "Send buffer file"        "o" #'claude-code-send-buffer-file
-          :desc "Fix error at point"      "e" #'claude-code-fix-error-at-point
-          :desc "Continue conversation"   "c" #'claude-code-continue
-          :desc "Resume session"          "R" #'claude-code-resume
-          :desc "Accept (return)"         "y" #'claude-code-send-return
-          :desc "Reject (escape)"         "n" #'claude-code-send-escape
-          :desc "Kill Claude"             "k" #'claude-code-kill
-          :desc "Command menu"            "m" #'claude-code-transient))))
+        (:prefix ("a" . "ai")
+         :desc "Claude"                  "a" #'claude-code
+         :desc "Toggle Claude"           "t" #'claude-code-toggle
+         :desc "Send region"             "r" #'claude-code-send-region
+         :desc "Send with context"       "x" #'claude-code-send-command-with-context
+         :desc "Send command"            "s" #'claude-code-send-command
+         :desc "Send buffer file"        "o" #'claude-code-send-buffer-file
+         :desc "Fix error at point"      "e" #'claude-code-fix-error-at-point
+         :desc "Continue conversation"   "c" #'claude-code-continue
+         :desc "Resume session"          "R" #'claude-code-resume
+         :desc "Accept (return)"         "y" #'claude-code-send-return
+         :desc "Reject (escape)"         "n" #'claude-code-send-escape
+         :desc "Kill Claude"             "k" #'claude-code-kill
+         :desc "Command menu"            "m" #'claude-code-transient)))
