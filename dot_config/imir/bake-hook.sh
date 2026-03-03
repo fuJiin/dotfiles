@@ -42,7 +42,7 @@ fi
 
 if [ ! -d "$DEV_HOME/.local/share/chezmoi" ]; then
     echo "Applying chezmoi dotfiles..."
-    sudo -u "$DEV_USER" chezmoi init --apply fuJiin/dotfiles
+    sudo -Hu "$DEV_USER" chezmoi init --apply fuJiin/dotfiles
 fi
 
 # ── CLI tools ─────────────────────────────────────────────────────
@@ -57,17 +57,17 @@ fi
 # worktrunk
 if ! command -v wt &> /dev/null; then
     echo "Installing worktrunk..."
-    sudo -u "$DEV_USER" bash -c 'curl -fsSL https://github.com/max-sixty/worktrunk/releases/latest/download/worktrunk-installer.sh | sh'
+    sudo -Hu "$DEV_USER" bash -c 'curl -fsSL https://github.com/max-sixty/worktrunk/releases/latest/download/worktrunk-installer.sh | sh'
 fi
 
 # uv (Python package manager)
 if ! command -v uv &> /dev/null; then
     echo "Installing uv..."
-    sudo -u "$DEV_USER" bash -c 'curl -fsSL https://astral.sh/uv/install.sh | sh'
+    sudo -Hu "$DEV_USER" bash -c 'curl -fsSL https://astral.sh/uv/install.sh | sh'
 fi
 
 # fnm (Node version manager)
 if ! command -v fnm &> /dev/null; then
     echo "Installing fnm..."
-    sudo -u "$DEV_USER" bash -c 'curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell'
+    sudo -Hu "$DEV_USER" bash -c 'curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell'
 fi
