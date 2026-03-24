@@ -13,6 +13,9 @@ Scaffold a new `.agents/CONTEXT.md` file for the current project:
 ## Overview
 [Brief project description, key technologies]
 
+## Integrations
+- **Linear Project:** [team-key/project-name, or "none"]
+
 ## Current Work
 [What's in progress, which branch(es), current state]
 
@@ -29,3 +32,15 @@ Populate the template by examining:
 - `git branch`, `git status`, and recent `git log --oneline` for current work
 - Leave Key Decisions empty if this is a fresh init
 - Derive next steps from current branch state and any open work
+
+## Linear Integration
+
+After scaffolding the file, check if Linear MCP tools are available (look for tools with names starting with `mcp__linear` or `linear`).
+
+If Linear MCP is available:
+1. List the user's teams and projects using the Linear MCP tools.
+2. Ask the user which Linear project (if any) should be mapped to this repo.
+3. Fill in the **Linear Project** field with the team key and project name (e.g., `ENG/Backend Infra`).
+4. If the user says none, set the field to "none".
+
+If Linear MCP is not available, set the field to "none" and move on.
