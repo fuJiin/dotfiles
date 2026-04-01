@@ -2,4 +2,4 @@
 # install-codex hash: {{ include "dot_local/bin/executable_install-codex" | sha256sum }}
 set -euo pipefail
 
-"$HOME/.local/bin/install-codex"
+"$HOME/.local/bin/install-codex" --upgrade

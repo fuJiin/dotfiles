@@ -31,7 +31,7 @@ if test -d $HOME/.local/share/fnm
     fish_add_path $HOME/.local/share/fnm
 end
 if command -q fnm
-    fnm env | source
+    status is-interactive; and fnm env | source
 end
 
 # bun
