@@ -1,3 +1,7 @@
+Host tinybox
+    HostName ec2-34-228-19-42.compute-1.amazonaws.com
+    User ubuntu
+
 Host *
     AddKeysToAgent yes
 {{- if eq .chezmoi.os "darwin" }}

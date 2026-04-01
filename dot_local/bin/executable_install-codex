@@ -2,10 +2,9 @@
 set -euo pipefail
 
 if command -v codex &>/dev/null; then
-    if [[ "${1:-}" == "--upgrade" ]]; then
-        codex --upgrade
+    if [[ "${1:-}" != "--upgrade" ]]; then
+        exit 0
     fi
-    exit 0
 fi
 
 os="$(uname -s)"
