@@ -45,9 +45,26 @@ A single file that captures project context for resuming work across sessions (a
 - [ ] Concrete task 2
 ```
 
+## Shared Skills
+
+Cross-agent skills live in `~/.agents/skills/` using the Open Agent Skills standard (`SKILL.md` format). Codex and Gemini discover this path natively. Claude Code accesses them via symlinks from `~/.claude/skills/`.
+
+**Available shared skills:**
+- `review-code` — Structural review, test/CI gaps, performance, observability
+- `review-research` — Research progress audit, literature review, principles assessment, bibliography
+
+**Invocation by agent:**
+| Agent | Syntax |
+|-------|--------|
+| Claude Code | `/review-code`, `/review-research` |
+| Codex CLI | `$review-code`, `$review-research` |
+| Gemini CLI | `/skills run review-code`, `/skills run review-research` |
+
+Skills are composable: each references related skills and can optionally dispatch to other installed agents for independent verification.
+
 ## Claude Code Skills
 
 When creating or modifying Claude Code customizations (slash commands, skills, etc.):
 
 - **Always use skills** (`~/.claude/skills/<name>/SKILL.md`), never commands (`~/.claude/commands/`). Skills support auto-invocation, frontmatter, and supporting files.
-- **Always manage through chezmoi.** Edit files in the chezmoi source directory (`dot_claude/skills/`) and run `chezmoi apply`. Never create or edit skills directly in `~/.claude/skills/`.
+- **Always manage through chezmoi.** Cross-agent skills go in `dot_agents/skills/`, Claude-only skills go in `dot_claude/skills/`. Run `chezmoi apply` after changes. Never edit skills directly in `~/.claude/skills/` or `~/.agents/skills/`.

@@ -14,6 +14,9 @@ brew "gh"
 # Dev tools
 brew "worktrunk"
 
+# AI agents
+brew "gemini-cli"
+
 # Cloud / Infra
 brew "hcloud"
 
