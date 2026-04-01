@@ -64,9 +64,9 @@ After completing your own analysis, check for other installed AI agents and disp
 
    | Agent | Command |
    |-------|---------|
-   | Claude Code | `claude -p "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
-   | Codex CLI | `codex exec "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
-   | Gemini CLI | `gemini -p "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
+   | Claude Code | `claude --model claude-opus-4-6 -p "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
+   | Codex CLI | `codex exec -m gpt-5.4 -c model_reasoning_effort=high "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
+   | Gemini CLI | `gemini -m gemini-2.5-pro -p "Review this codebase for: (1) structural issues, (2) test/CI gaps, (3) performance wins, (4) observability gaps. Working directory: $(pwd). Scope: [path]. Be concise — findings table only."` |
 
 3. Synthesize all findings:
    - **Consensus findings** (multiple agents agree) — high confidence, flag these prominently.

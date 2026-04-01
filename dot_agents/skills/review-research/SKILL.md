@@ -81,9 +81,9 @@ After completing your own analysis, check for other installed AI agents and disp
 
    | Agent | Command |
    |-------|---------|
-   | Claude Code | `claude -p "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
-   | Codex CLI | `codex exec "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
-   | Gemini CLI | `gemini -p "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
+   | Claude Code | `claude --model claude-opus-4-6 -p "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
+   | Codex CLI | `codex exec -m gpt-5.4 -c model_reasoning_effort=high "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
+   | Gemini CLI | `gemini -m gemini-2.5-pro -p "You are reviewing a research project at $(pwd). Do TWO things: (1) Search for recent papers (last 2 years) related to [project's key topics]. List author, title, venue, year, and one-line relevance. (2) Assess the experimental methodology for validity issues. Be concise."` |
 
 3. Synthesize findings:
    - **Literature**: Deduplicate references across agents. Papers found by multiple agents are higher confidence.
