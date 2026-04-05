@@ -4,6 +4,28 @@ set -euo pipefail
 DEV_USER="dev"
 DEV_HOME="/home/$DEV_USER"
 
+# ── SSH & firewall hardening ─────────────────────────────────────
+
+echo "Applying SSH hardening..."
+cat > /etc/ssh/sshd_config.d/99-hardening.conf <<'SSHD'
+PasswordAuthentication no
+PermitRootLogin no
+X11Forwarding no
+MaxAuthTries 3
+SSHD
+systemctl reload ssh || true
+
+echo "Configuring firewall..."
+apt-get install -y ufw
+ufw default deny incoming
+ufw default allow outgoing
+ufw allow 22/tcp
+ufw --force enable
+
+echo "Installing fail2ban..."
+apt-get install -y fail2ban
+systemctl enable --now fail2ban
+
 # ── System packages (personal toolkit) ────────────────────────────
 
 echo "Installing toolkit packages..."
