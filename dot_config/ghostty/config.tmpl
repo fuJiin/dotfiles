@@ -22,7 +22,8 @@ quick-terminal-autohide = true
 quick-terminal-animation-duration = 0.2
 
 # Shell
-command = /usr/local/bin/fish
+# Homebrew prefix differs by arch: /opt/homebrew on Apple Silicon, /usr/local on Intel
+command = {{ if eq .chezmoi.arch "arm64" }}/opt/homebrew{{ else }}/usr/local{{ end }}/bin/fish
 
 # Terminal settings
 scrollback-limit = 1000
