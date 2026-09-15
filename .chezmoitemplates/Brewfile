@@ -29,14 +29,24 @@ brew "fnm"
 if OS.mac?
   cask_args appdir: "/Applications"
 
+  # Required by the Claude Code hooks in ~/.claude/settings.json
+  brew "terminal-notifier"
+
   # Terminal
   cask "ghostty"
 
   # Editor
+  # NOTE: third-party tap. Homebrew requires explicit trust before this
+  # will install:  brew trust d12frosted/emacs-plus
+  # native-comp is built in as of Emacs 29+, so no --with-native-comp arg.
   tap "d12frosted/emacs-plus"
-  brew "emacs-plus", args: ["with-native-comp"]
+  brew "emacs-plus"
+{{- if .personal }}
 
-  # QoL Apps
+  # === PERSONAL MACHINES ONLY ===
+  # Gated on `personal` in ~/.config/chezmoi/chezmoi.toml so work machines
+  # never pull in consumer apps or hit an App Store sign-in prompt.
+
   cask "alfred"
   cask "1password"
   cask "macdown-3000"
@@ -46,4 +56,5 @@ if OS.mac?
   # Keep system awake
   brew "mas"
   mas "Amphetamine", id: 937984704
+{{- end }}
 end
