@@ -35,6 +35,11 @@ fi
 
 {{ end -}}
 # Configure SSH
-if [ ! -f ~/.ssh/id_rsa ]; then
-    ssh-keygen -t rsa -b 4096 -C "{{ .git.email }}" -N "" -f ~/.ssh/id_rsa
+# Use the work identity for the key comment when this machine has one.
+{{ $sshEmail := .git.email -}}
+{{ if .git.workEmail }}{{ $sshEmail = .git.workEmail }}{{ end -}}
+if [ ! -f ~/.ssh/id_ed25519 ]; then
+    ssh-keygen -t ed25519 -C "{{ $sshEmail }}" -N "" -f ~/.ssh/id_ed25519
+    echo "NOTE: SSH key created without a passphrase. Add one with:"
+    echo "      ssh-keygen -p -f ~/.ssh/id_ed25519"
 fi
