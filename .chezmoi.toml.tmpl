@@ -1,0 +1,25 @@
+{{- $name      := promptStringOnce . "git.name"      "Git author name" -}}
+{{- $email     := promptStringOnce . "git.email"     "Git email (default identity)" -}}
+{{- $workDir   := promptStringOnce . "git.workDir"   "Work repo directory, blank for none (e.g. ~/Code/)" "" -}}
+{{- $workEmail := "" -}}
+{{- if $workDir -}}
+{{-   $workEmail = promptStringOnce . "git.workEmail" "Work git email (for repos under that directory)" -}}
+{{- end -}}
+{{- $doomEmail := promptStringOnce . "doom.email"    "Emacs/Doom user-mail-address" $email -}}
+{{- $personal  := promptBoolOnce   . "personal"      "Personal machine? (true also installs Spotify, Alfred, 1Password, Rectangle, MacDown, Amphetamine)" false -}}
+# Rendered by `chezmoi init` into ~/.config/chezmoi/chezmoi.toml.
+# This file is per-machine and is NOT tracked in the dotfiles repo, which is
+# what keeps email addresses out of version control.
+
+[data]
+    personal = {{ $personal }}
+
+[data.git]
+    name = {{ $name | quote }}
+    email = {{ $email | quote }}
+    workDir = {{ $workDir | quote }}
+    workEmail = {{ $workEmail | quote }}
+
+[data.doom]
+    # Emacs identity, kept separate from the git identity on purpose.
+    email = {{ $doomEmail | quote }}

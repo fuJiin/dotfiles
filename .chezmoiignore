@@ -1,4 +1,10 @@
+{{- if not (and .git.workDir .git.workEmail) }}
+# No work identity configured on this machine
+.gitconfig-work
+{{- end }}
+
 {{- if ne .chezmoi.os "darwin" }}
+
 # macOS-only: Homebrew package list
 Brewfile
 
