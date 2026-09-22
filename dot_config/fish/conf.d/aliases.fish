@@ -45,8 +45,10 @@ if command -q shadow-cljs
 end
 
 # Claude
+# Deliberately no bypass-permissions alias: modes are switchable in-session
+# (shift+tab), so a launch-time flag buys nothing, and a two-character alias
+# one typo away from `cc` is a bad way to end up with nothing asking first.
 alias cc "claude"
-alias ccd "claude --dangerously-skip-permissions"
 
 # Search
 if command -q rg
