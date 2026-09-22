@@ -1,6 +1,15 @@
-Host tinybox
-    HostName ec2-34-228-19-42.compute-1.amazonaws.com
-    User ubuntu
+# Machine-specific hosts do NOT belong in this repo -- it is public, and a real
+# hostname here advertises a box you own and ties it to your identity. Put them
+# in ~/.ssh/config.local instead, which is outside chezmoi and never committed:
+#
+#     Host myhost
+#         HostName <address>
+#         User <user>
+#
+# Included first on purpose: ssh takes the first value it obtains for most
+# options, so entries in config.local can override the defaults below. A
+# missing config.local is not an error, so this is safe on a fresh machine.
+Include ~/.ssh/config.local
 
 Host *
     AddKeysToAgent yes
