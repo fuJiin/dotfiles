@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+#
+# brewfile-audit -- check the Brewfile against Homebrew, and against the tools
+# the managed configs actually depend on.
+#
+# Three independent checks, reported separately so a failure tells you which
+# kind of drift you have:
+#
+#   RESOLVE   Every Brewfile entry still exists in Homebrew. Catches formulae
+#             and casks renamed, deprecated or dropped upstream.
+#
+#   DEPENDS   Every tool a managed config hard-requires is in the Brewfile.
+#             Catches the bug class where run_once_before_01-install.sh
+#             apt-installs something on Linux and the macOS path silently
+#             never does -- which is exactly how jq and tmux went missing.
+#
+#   ADVISE    Notes on newer alternatives. Informational; never fails.
+#
+# Exits non-zero if RESOLVE or DEPENDS found a problem, so this works in CI.
+#
+# Usage: brewfile-audit [--quiet]
+
+set -uo pipefail
+
+QUIET=0
+[ "${1:-}" = "--quiet" ] && QUIET=1
+
+if ! command -v brew &> /dev/null; then
+    for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        [ -x "$candidate" ] && eval "$("$candidate" shellenv)" && break
+    done
+fi
+
+# chezmoi may have bootstrapped itself into ~/.local/bin before Homebrew ever
+# took over managing it, so check there too rather than assuming PATH.
+if ! command -v chezmoi &> /dev/null && [ -x "$HOME/.local/bin/chezmoi" ]; then
+    PATH="$HOME/.local/bin:$PATH"
+fi
+
+command -v brew    &> /dev/null || { echo "brewfile-audit: brew not found"; exit 127; }
+command -v chezmoi &> /dev/null || { echo "brewfile-audit: chezmoi not found"; exit 127; }
+
+# The Brewfile is a chezmoi template gated on `personal`, so it has to be
+# rendered with this machine's data rather than read off disk.
+BREWFILE="$(mktemp)"
+trap 'rm -f "$BREWFILE"' EXIT
+if ! chezmoi execute-template '{{ template "Brewfile" . }}' > "$BREWFILE" 2>/dev/null; then
+    echo "brewfile-audit: could not render the Brewfile template"
+    exit 1
+fi
+
+# Strip trailing comments so `brew "jq"  # why` parses.
+entries() { sed 's/#.*//' "$BREWFILE" | grep -oE "^[[:space:]]*$1 \"[^\"]+\"" | grep -oE '"[^"]+"' | tr -d '"'; }
+
+TAPS=$(entries tap)
+FORMULAE=$(entries brew)
+CASKS=$(entries cask)
+ALL=$(printf '%s\n%s' "$FORMULAE" "$CASKS")
+
+say()  { [ "$QUIET" -eq 1 ] || echo "$@"; }
+fail=0
+
+# --- RESOLVE ----------------------------------------------------------------
+say "== RESOLVE =================================================="
+missing_resolve=()
+unverified=()
+
+# A formula from a declared-but-not-yet-tapped tap cannot be looked up locally.
+# That is not the same as having been removed upstream, so it is reported
+# separately and does not fail the audit -- otherwise this check would always
+# fail on a machine that has not run `brew bundle` yet.
+untapped_taps=0
+installed_taps=$(brew tap)
+for tap in $TAPS; do
+    grep -qxF "$tap" <<< "$installed_taps" || untapped_taps=1
+done
+
+resolves() { # <kind-flag> <name>
+    brew info "$1" "$2" &> /dev/null && return 0
+    # Tapped formulae need their tap prefix, e.g. d12frosted/emacs-plus/emacs-plus
+    for tap in $TAPS; do
+        brew info "$1" "$tap/$2" &> /dev/null && return 0
+    done
+    return 1
+}
+
+classify() { # <kind> <kind-flag> <name>
+    resolves "$2" "$3" && return
+    if [ "$untapped_taps" -eq 1 ]; then
+        unverified+=("$1 $3")
+    else
+        missing_resolve+=("$1 $3")
+    fi
+}
+
+for f in $FORMULAE; do
+    classify formula --formula "$f"
+done
+
+# Casks only exist on macOS; brew bundle guards them with `if OS.mac?`.
+if [ "$(uname)" = "Darwin" ]; then
+    for c in $CASKS; do
+        classify cask --cask "$c"
+    done
+fi
+
+if [ ${#missing_resolve[@]} -eq 0 ]; then
+    say "ok: all $(($(echo "$FORMULAE $CASKS" | wc -w) - ${#unverified[@]})) entries resolve in Homebrew"
+else
+    for m in "${missing_resolve[@]}"; do echo "FAIL: $m does not resolve -- renamed or removed upstream?"; done
+    fail=1
+fi
+
+if [ ${#unverified[@]} -ne 0 ]; then
+    say "skip: cannot verify ${unverified[*]} -- a declared tap is not added yet; re-run after brew bundle"
+fi
+
+# --- DEPENDS ----------------------------------------------------------------
+# Tools a managed config hard-requires on every machine. Add a row here when a
+# config starts shelling out to something new.
+#
+# Deliberately NOT listed, because the configs already guard them with
+# `command -q` / `test -d` and they are installed per-project or by hand:
+#   docker, lein, shadow-cljs, bun, forge/cast/anvil, cargo, ipython
+say ""
+say "== DEPENDS ================================================="
+REQUIRED=(
+    "fish|~/.config/fish/** is the shell config"
+    "tmux|~/.tmux.conf; the tmx alias; ~/.doom.d/init.el"
+    "jq|~/.claude/statusline.sh; modify_.claude/settings.json at apply time"
+    "chezmoi|manages this repo; the cz alias"
+    "ripgrep|the grep alias in aliases.fish (binary: rg)"
+    "fd|the find alias in aliases.fish"
+    "lazygit|the lg alias"
+    "gh|git/GitHub workflows"
+    "uv|~/.config/imir/bake-hook.sh"
+    "pyenv|pyenv init in config.fish"
+    "fnm|fnm env in config.fish"
+)
+# macOS-only requirements.
+if [ "$(uname)" = "Darwin" ]; then
+    REQUIRED+=(
+        "terminal-notifier|the Claude Code hooks in ~/.claude/settings.json"
+        "ghostty|the gt alias; ~/.config/ghostty/config"
+        "emacs-plus|EDITOR/VISUAL are emacsclient; ~/.doom.d/**"
+    )
+fi
+
+missing_dep=0
+for row in "${REQUIRED[@]}"; do
+    tool="${row%%|*}"
+    why="${row#*|}"
+    if ! grep -qxF "$tool" <<< "$ALL"; then
+        echo "FAIL: $tool is not in the Brewfile -- needed by: $why"
+        missing_dep=1
+    fi
+done
+[ "$missing_dep" -eq 0 ] && say "ok: every declared config dependency is in the Brewfile" || fail=1
+
+# --- ADVISE -----------------------------------------------------------------
+say ""
+say "== ADVISE =================================================="
+if [ "$QUIET" -eq 0 ]; then
+    advise() { grep -qxF "$1" <<< "$FORMULAE" && echo "note: $2"; }
+    advise pyenv "pyenv + fnm could both be replaced by mise, which manages every runtime from one tool. pyenv still works; this is a consolidation, not a fix."
+    advise pyenv "uv is installed and can manage Python versions itself (uv python install), so pyenv may be redundant depending on how you use it."
+    advise emacs-plus "emacs-plus builds Emacs from source (20+ min, and the GNU mirror timeout documented in the README). cask \"emacs\" is a prebuilt binary if you ever want the build to stop being a factor -- but emacs-plus is still what Doom recommends, so this is a tradeoff, not an upgrade."
+    advise alfred "raycast is the actively-developed alternative to Alfred."
+    echo "note: bat, eza, zoxide, fzf and atuin are common additions to this toolset and are all in homebrew-core. Not installed by choice, not by oversight."
+fi
+
+say ""
+if [ "$fail" -ne 0 ]; then
+    echo "brewfile-audit: FAILED"
+else
+    say "brewfile-audit: clean"
+fi
+exit "$fail"

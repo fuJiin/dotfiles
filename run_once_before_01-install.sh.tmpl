@@ -2,13 +2,24 @@
 set -euo pipefail
 
 {{ if eq .chezmoi.os "darwin" -}}
+# Load brew's PATH *before* testing whether it is installed. chezmoi runs this
+# in a non-login shell, so an existing Homebrew is usually absent from PATH --
+# testing first would re-run the installer, which then demands sudo and fails.
+{{ template "brew-shellenv" . }}
+
 # Install Homebrew
 if ! command -v brew &> /dev/null; then
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    NONINTERACTIVE=1 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 fi
 
-# Update Git
-brew install git
+# Again, to pick up a Homebrew that the line above just installed.
+{{ template "brew-shellenv" . }}
+
+# Update Git, and install jq up front: this is a `before_` script precisely
+# because modify_dot_claude/settings.json.tmpl pipes through jq while files are
+# being applied, which happens long before run_onchange_after_02-brew-bundle.sh
+# gets a chance to install it.
+brew install git jq
 
 {{ else if eq .chezmoi.os "linux" -}}
 sudo apt-get update

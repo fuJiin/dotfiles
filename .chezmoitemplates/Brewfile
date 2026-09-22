@@ -2,6 +2,7 @@
 
 # Shell
 brew "fish"
+brew "tmux"          # ~/.tmux.conf is managed here; the `tmx` alias needs it
 
 # Search
 brew "ripgrep"
@@ -13,6 +14,9 @@ brew "gh"
 
 # Dev tools
 brew "worktrunk"
+brew "chezmoi"       # manages this repo; the `cz` alias needs it
+brew "jq"            # REQUIRED at apply time by modify_.claude/settings.json
+                     # and at runtime by ~/.claude/statusline.sh
 
 # AI agents
 brew "gemini-cli"
@@ -23,6 +27,7 @@ brew "hcloud"
 # Language runtimes
 brew "pyenv"
 brew "fnm"
+brew "uv"            # used by ~/.config/imir/bake-hook.sh
 
 # === macOS ONLY ===
 

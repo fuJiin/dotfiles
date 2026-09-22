@@ -63,11 +63,8 @@ re-triggers `brew bundle` on the next apply.
 #### Emacs
 
 `emacs-plus` comes from a third-party tap, which recent Homebrew will not load
-until it is explicitly trusted. Run this once before the first `brew bundle`:
-
-```bash
-brew trust d12frosted/emacs-plus
-```
+until it is explicitly trusted. `run_onchange_after_02-brew-bundle.sh` now runs
+`brew trust` for every tap the Brewfile declares, so this needs no manual step.
 
 **If the Emacs source download times out**, the formula pulls from
 `ftpmirror.gnu.org`, which some corporate networks block outright (the symptom
@@ -114,6 +111,61 @@ chsh -s "$FISH"
 Ghostty is configured to launch fish directly, so it picks the right binary for
 the architecture without needing `chsh`.
 
+### Auditing the Brewfile
+
+`brewfile-audit` (installed to `~/.local/bin`) checks the package list against
+Homebrew and against what the configs in this repo actually depend on:
+
+```bash
+brewfile-audit           # full report
+brewfile-audit --quiet   # only problems; exits non-zero on failure, for CI
+```
+
+It runs three independent checks, reported separately so a failure tells you
+which kind of drift you are looking at:
+
+| Check | What it catches | Fails the run? |
+| --- | --- | --- |
+| `RESOLVE` | Brewfile entries that no longer exist in Homebrew — renamed, deprecated or dropped upstream | yes |
+| `DEPENDS` | A tool a managed config hard-requires that the Brewfile never installs | yes |
+| `ADVISE` | Newer alternatives worth knowing about | no, informational |
+
+`RESOLVE` renders the Brewfile through `chezmoi execute-template` rather than
+reading it off disk, so the `personal` gate is applied the same way `brew
+bundle` sees it. A formula from a declared tap that is not added yet reports as
+`skip`, not a failure — otherwise the check would always fail on a machine that
+has not run `brew bundle`.
+
+`DEPENDS` exists because of a bug class this repo is specifically prone to: on
+Linux, `run_once_before_01-install.sh` apt-installs a handful of tools, and it
+is easy to add a config that depends on one of them without noticing that the
+macOS path never installs it. `jq` and `tmux` both went missing on macOS that
+way — `jq` being the worse case, since `modify_dot_claude/settings.json.tmpl`
+pipes through it *during `chezmoi apply` itself*.
+
+When a config starts shelling out to something new, add a row to the `REQUIRED`
+table in the script. Tools the configs already guard with `command -q` (docker,
+lein, shadow-cljs, bun, foundry) are deliberately excluded and listed as such
+in a comment.
+
+### Script ordering
+
+The scripts are numbered and carry explicit `before_`/`after_` attributes,
+because the default ordering is alphabetical across *all* targets — which put
+`.claude/**` (and its jq-dependent `modify_` script) ahead of the script that
+installs jq, and put the Doom install ahead of the Emacs it needs.
+
+| Script | When | Does |
+| --- | --- | --- |
+| `run_once_before_01-install.sh` | before any file is applied | Homebrew, git, **jq**, SSH key |
+| `run_onchange_after_02-brew-bundle.sh` | after files | trusts taps, `brew bundle` |
+| `run_once_after_03-configure.sh` | after packages exist | clones Doom, `doom install` |
+| `run_onchange_after_04-install-codex.sh` | last | `install-codex --upgrade` |
+
+If you renumber or rename one of these, chezmoi treats it as a new script and
+`run_once_` entries will execute again. All of them are idempotent, so that is
+safe, but it is why the numbers are padded.
+
 ### Common Commands
 
 ```bash
@@ -123,4 +175,5 @@ chezmoi diff                # Preview changes
 chezmoi apply               # Apply changes
 chezmoi update              # Pull latest and apply
 chezmoi apply --exclude=scripts   # Apply files without running scripts
+brewfile-audit                    # Check the package list for drift
 ```

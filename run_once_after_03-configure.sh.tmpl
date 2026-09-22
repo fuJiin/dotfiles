@@ -1,0 +1,23 @@
+#!/bin/bash
+set -euo pipefail
+
+{{ if eq .chezmoi.os "darwin" -}}
+{{ template "brew-shellenv" . }}
+
+# Clone Doom Emacs if not present (macOS only - remote boxes use TRAMP).
+# `doom install` byte-compiles by shelling out to emacs, so it cannot run
+# before run_onchange_after_02-brew-bundle.sh has installed emacs-plus -- hence
+# the `after_03` ordering, and the guard for the case where that build failed.
+if [ ! -d ~/.emacs.d ]; then
+    if ! command -v emacs &> /dev/null; then
+        echo "WARN: emacs not found, skipping Doom install."
+        echo "      Install emacs-plus, then re-run: chezmoi state delete-bucket --bucket=scriptState && chezmoi apply"
+    else
+        git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+        ~/.emacs.d/bin/doom install
+    fi
+fi
+
+# Ensure config directories exist
+mkdir -p ~/.config/ghostty
+{{ end -}}

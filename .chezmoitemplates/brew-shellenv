@@ -1,0 +1,12 @@
+# The Homebrew installer does not touch the PATH of the shell that ran it, and
+# chezmoi runs each script in a fresh non-login shell, so `brew` is frequently
+# absent from PATH here even when it is installed. Load it explicitly --
+# /opt/homebrew on Apple Silicon, /usr/local on Intel.
+if ! command -v brew &> /dev/null; then
+    for candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do
+        if [ -x "$candidate" ]; then
+            eval "$("$candidate" shellenv)"
+            break
+        fi
+    done
+fi
