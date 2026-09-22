@@ -14,6 +14,9 @@
 #             apt-installs something on Linux and the macOS path silently
 #             never does -- which is exactly how jq and tmux went missing.
 #
+#   SELFUPD   Which casks carry `auto_updates`, meaning the app updates itself
+#             and Homebrew only ever bootstraps it. Informational.
+#
 #   ADVISE    Notes on newer alternatives. Informational; never fails.
 #
 # Exits non-zero if RESOLVE or DEPENDS found a problem, so this works in CI.
@@ -157,6 +160,25 @@ for row in "${REQUIRED[@]}"; do
 done
 [ "$missing_dep" -eq 0 ] && say "ok: every declared config dependency is in the Brewfile" || fail=1
 
+# --- SELFUPD ----------------------------------------------------------------
+# A cask marked auto_updates ships its own updater, so `brew upgrade` will not
+# meaningfully track it -- Homebrew installs it once and the app takes over.
+# Worth knowing before concluding that a version in this Brewfile is what is
+# actually running, or that pinning here controls anything.
+if [ "$(uname)" = "Darwin" ] && [ "$QUIET" -eq 0 ] && command -v jq &> /dev/null; then
+    say ""
+    say "== SELFUPD ================================================="
+    selfupd=() brewmanaged=()
+    for c in $CASKS; do
+        case "$(brew info --json=v2 --cask "$c" 2>/dev/null | jq -r '.casks[0].auto_updates')" in
+            true) selfupd+=("$c") ;;
+            *)    brewmanaged+=("$c") ;;
+        esac
+    done
+    [ ${#selfupd[@]}     -ne 0 ] && say "self-updating (brew only bootstraps): ${selfupd[*]}"
+    [ ${#brewmanaged[@]} -ne 0 ] && say "brew keeps these current:            ${brewmanaged[*]}"
+fi
+
 # --- ADVISE -----------------------------------------------------------------
 say ""
 say "== ADVISE =================================================="
@@ -165,7 +187,13 @@ if [ "$QUIET" -eq 0 ]; then
     advise pyenv "pyenv + fnm could both be replaced by mise, which manages every runtime from one tool. pyenv still works; this is a consolidation, not a fix."
     advise pyenv "uv is installed and can manage Python versions itself (uv python install), so pyenv may be redundant depending on how you use it."
     advise emacs-plus "emacs-plus builds Emacs from source (20+ min, and the GNU mirror timeout documented in the README). cask \"emacs\" is a prebuilt binary if you ever want the build to stop being a factor -- but emacs-plus is still what Doom recommends, so this is a tradeoff, not an upgrade."
-    advise alfred "raycast is the actively-developed alternative to Alfred."
+    advise alfred "raycast is the actively-developed alternative to Alfred, and bundles window management -- which would overlap Rectangle."
+    if grep -qxF rectangle <<< "$CASKS" && [ "$(uname)" = "Darwin" ]; then
+        major="$(sw_vers -productVersion | cut -d. -f1)"
+        if [ "${major:-0}" -ge 15 ]; then
+            echo "note: macOS $major has native window tiling built in, which covers the common halves/quarters that Rectangle is usually installed for. Rectangle still wins on custom shortcuts, thirds/sixths and snap areas, so this is a question of how much you use it -- not a deprecation. It is NOT on the Mac App Store, so Homebrew is the correct channel either way."
+        fi
+    fi
     echo "note: bat, eza, zoxide, fzf and atuin are common additions to this toolset and are all in homebrew-core. Not installed by choice, not by oversight."
 fi
 

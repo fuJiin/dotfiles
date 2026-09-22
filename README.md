@@ -121,6 +121,33 @@ curl -fsSL -o "$DEST" "https://mirrors.kernel.org/gnu/emacs/emacs-$VER.tar.xz"
 echo "$SHA  $DEST" | shasum -a 256 -c - && brew install d12frosted/emacs-plus/emacs-plus
 ```
 
+#### A cask that installed but is not recorded
+
+`brew bundle` can leave a cask half-installed: the app is copied into
+`/Applications`, but a later step fails, so nothing is written to
+`$(brew --prefix)/Caskroom` and Homebrew still reports it as missing. Every
+later `brew bundle` then fails on it. This happens most easily in a
+non-interactive session, because some casks run a `chgrp` under `sudo` and
+there is no one to type a password.
+
+Do **not** delete the app and reinstall. If the installed version matches the
+cask version, adopt it — Homebrew writes the missing record, re-uses the app in
+place, and leaves its preferences alone:
+
+```bash
+brew install --cask --adopt rectangle
+```
+
+`--adopt` refuses to combine with `--force`, and only adopts artifacts that are
+identical to what it would install, so it is the safe option rather than the
+shortcut. Compare versions first if unsure:
+
+```bash
+/usr/libexec/PlistBuddy -c 'Print :CFBundleShortVersionString' \
+    /Applications/Rectangle.app/Contents/Info.plist
+brew info --json=v2 --cask rectangle | jq -r '.casks[0].version'
+```
+
 #### SSH key
 
 `run_once_01-install.sh` creates `~/.ssh/id_ed25519` if it does not already
