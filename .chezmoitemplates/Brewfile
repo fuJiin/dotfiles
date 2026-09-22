@@ -46,6 +46,12 @@ if OS.mac?
   # native-comp is built in as of Emacs 29+, so no --with-native-comp arg.
   tap "d12frosted/emacs-plus"
   brew "emacs-plus"
+
+  # Doom requires this for its icons (nerd-icons); without it `doom doctor`
+  # warns and every icon renders as a placeholder box. Note that Symbola,
+  # Emacs' unicode fallback font, is NOT in Homebrew -- install it by hand from
+  # unicode.org if `doom doctor` complains about it.
+  cask "font-symbols-only-nerd-font"
 {{- if .personal }}
 
   # === PERSONAL MACHINES ONLY ===
