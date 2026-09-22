@@ -9,13 +9,28 @@ set -euo pipefail
 # before run_onchange_after_02-brew-bundle.sh has installed emacs-plus -- hence
 # the `after_03` ordering, and the guard for the case where that build failed.
 if [ ! -d ~/.emacs.d ]; then
-    if ! command -v emacs &> /dev/null; then
-        echo "WARN: emacs not found, skipping Doom install."
-        echo "      Install emacs-plus, then re-run: chezmoi state delete-bucket --bucket=scriptState && chezmoi apply"
-    else
-        git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-        ~/.emacs.d/bin/doom install
-    fi
+    git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+fi
+
+# The install is deliberately NOT guarded on a path. The clone and the install
+# are separate steps, so any guard that a half-finished install also satisfies
+# ("~/.emacs.d exists", "straight/ exists") turns this into a permanent no-op
+# with Doom never installed -- which is the trap the directory guard fell into.
+#
+# chezmoi already provides the right semantics: it records a run_once script
+# only after it exits 0, so with `set -e` a failed install simply retries on the
+# next apply. `doom install` is itself idempotent and skips what it has already
+# done, so re-running costs little and is always safe.
+if ! command -v emacs &> /dev/null; then
+    # Not fatal: the box may be mid-emacs-plus build, or headless.
+    echo "WARN: emacs not found, skipping Doom install."
+    echo "      Install emacs-plus, then re-run: ~/.emacs.d/bin/doom install --force"
+else
+    # --force is not optional. Without it `doom install` prompts (envvar file,
+    # fonts) and chezmoi runs scripts with no TTY -- so it does not fail, it
+    # blocks on stdin indefinitely, which is indistinguishable from a slow
+    # build until you notice Emacs sitting at 0% CPU.
+    ~/.emacs.d/bin/doom install --force
 fi
 
 # Ensure config directories exist
