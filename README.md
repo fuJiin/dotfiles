@@ -38,6 +38,45 @@ $EDITOR ~/.config/chezmoi/chezmoi.toml
 chezmoi apply
 ```
 
+#### GitHub email privacy
+
+If the GitHub account has **Keep my email addresses private** enabled, pushing
+commits authored with a real address fails on every push:
+
+```
+remote: error: GH007: Your push would publish a private email address.
+```
+
+Set `git.email` to the account's noreply alias, which is
+`<user-id>+<username>@users.noreply.github.com`:
+
+```bash
+gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"'
+```
+
+Commits already made with the wrong address have to be rewritten, not just
+reconfigured — git records the author at commit time:
+
+Use `if`/`fi` rather than `[ ... ] && export` here: the `&&` form exits
+non-zero whenever an address does *not* match, which aborts the filter.
+
+```bash
+OLD="old@example.com"
+NEW="$(gh api user --jq '"\(.id)+\(.login)@users.noreply.github.com"')"
+
+FILTER_BRANCH_SQUELCH_WARNING=1 git filter-branch -f --env-filter "
+    if [ \"\$GIT_AUTHOR_EMAIL\" = \"$OLD\" ]; then
+        export GIT_AUTHOR_EMAIL=\"$NEW\"
+    fi
+    if [ \"\$GIT_COMMITTER_EMAIL\" = \"$OLD\" ]; then
+        export GIT_COMMITTER_EMAIL=\"$NEW\"
+    fi
+" origin/main..main
+```
+
+This rewrites history, so it needs a force-push if the commits were already
+pushed. Rewriting only `origin/main..main` — the unpushed range — avoids that.
+
 #### Two git identities
 
 When `git.workDir` and `git.workEmail` are both set, `~/.gitconfig` gets an
@@ -86,16 +125,24 @@ echo "$SHA  $DEST" | shasum -a 256 -c - && brew install d12frosted/emacs-plus/em
 
 `run_once_01-install.sh` creates `~/.ssh/id_ed25519` if it does not already
 exist, commented with the work email when the machine has one and the default
-email otherwise. It is generated **without a passphrase** because the script is
-non-interactive; add one immediately:
+email otherwise. It is generated **without a passphrase** because the script is non-interactive.
+Whether to add one is a judgement call rather than an automatic yes:
 
 ```bash
 ssh-keygen -p -f ~/.ssh/id_ed25519
 ```
 
-With `UseKeychain yes` (set in `~/.ssh/config`) macOS stores the passphrase in
-the keychain, so this costs nothing at use time. Remember to register the public
-key with GitHub and any hosts you reach over SSH.
+With FileVault on, a powered-off machine will not give up the key, and
+`UseKeychain yes` (set in `~/.ssh/config`) means the passphrase lives in the
+login keychain anyway — so it adds little against anything already running as
+you. What it does protect is the key file *leaving* the machine readable: an
+unencrypted Time Machine target, a synced folder, a copied `~/.ssh`. Worth it
+for a key that reaches hosts which are painful to re-key; skippable for one
+that only reaches a box where you can edit `authorized_keys` in a minute.
+
+Register the public key with any hosts you reach over SSH. GitHub does not need
+it if you authenticate with `gh auth login` over HTTPS, which stores a token in
+the keychain and leaves the remote URLs alone.
 
 #### Set fish as the default shell
 

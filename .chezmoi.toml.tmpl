@@ -1,5 +1,8 @@
 {{- $name      := promptStringOnce . "git.name"      "Git author name" -}}
-{{- $email     := promptStringOnce . "git.email"     "Git email (default identity)" -}}
+{{- /* If the GitHub account has "Keep my email addresses private" enabled, a
+       real address here makes every push fail with GH007. The noreply alias
+       is the fix, and is what this repo's own history already uses. */ -}}
+{{- $email     := promptStringOnce . "git.email"     "Git email (default identity; use <id>+<user>@users.noreply.github.com if GitHub email privacy is on)" -}}
 {{- $workDir   := promptStringOnce . "git.workDir"   "Work repo directory, blank for none (e.g. ~/Code/)" "" -}}
 {{- $workEmail := "" -}}
 {{- if $workDir -}}
