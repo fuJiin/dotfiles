@@ -40,6 +40,22 @@ else
     ~/.emacs.d/bin/doom install --force < /dev/null
 fi
 
+# emacs-plus leaves Emacs.app inside the Cellar and only prints a caveat about
+# it, so a fresh machine has a working `emacs` CLI but nothing in Finder,
+# Spotlight or the Dock -- which reads as "Emacs didn't install".
+#
+# Linked, not copied. Homebrew's caveat suggests `cp -r` for better Spotlight
+# indexing, but a copy goes stale the moment emacs-plus is upgraded. The link
+# points at the UNVERSIONED opt path, so it keeps following version bumps
+# (emacs-plus@31 -> @32) with no action. Swap to `cp -r` if Spotlight matters
+# more to you than staying current.
+for app in "Emacs.app" "Emacs Client.app"; do
+    src="$(brew --prefix)/opt/emacs-plus/$app"
+    if [ -e "$src" ] && [ ! -e "/Applications/$app" ]; then
+        ln -s "$src" "/Applications/$app"
+    fi
+done
+
 # Ensure config directories exist
 mkdir -p ~/.config/ghostty
 {{ end -}}
