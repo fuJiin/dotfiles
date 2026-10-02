@@ -94,8 +94,24 @@ with `git -C <repo> config user.email` if in doubt.
 1Password, Rectangle, MacDown, and Amphetamine via the Mac App Store — out of
 the Brewfile entirely. Set it to `true` on a personal machine. The package list
 lives in `.chezmoitemplates/Brewfile` and is rendered into
-`run_onchange_brew-bundle.sh`, so changing either the list or the flag
+`run_onchange_after_02-brew-bundle.sh`, so changing either the list or the flag
 re-triggers `brew bundle` on the next apply.
+
+#### Moving an existing machine to `main`
+
+The default branch was renamed from `master` to `main`, and `master` no longer
+exists on GitHub, so `chezmoi update` fails on a checkout that still tracks it.
+Fix it once per machine:
+
+```bash
+chezmoi cd
+git fetch --prune && git checkout -B main origin/main && git branch -u origin/main
+```
+
+Before the next apply, move any machine-specific `Host` entries out of
+`~/.ssh/config` and into `~/.ssh/config.local`. The managed `.ssh/config` now
+includes that file instead of listing hosts itself, so an apply would otherwise
+drop them.
 
 ### Post-install
 

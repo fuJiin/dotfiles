@@ -28,4 +28,13 @@ if command -v brew &> /dev/null && brew trust --help &> /dev/null; then
 fi
 
 brew bundle --file="$brewfile"
+
+# The get.chezmoi.io bootstrap leaves its own chezmoi in ~/.local/bin, which
+# shadows Homebrew's on PATH and never updates. Once Homebrew's copy exists,
+# remove the bootstrap one. Deleting the binary that is running this apply is
+# safe: the process keeps its open inode.
+if [ -x "$(brew --prefix)/bin/chezmoi" ] && [ -f "$HOME/.local/bin/chezmoi" ]; then
+    rm -f "$HOME/.local/bin/chezmoi"
+    echo "Removed bootstrap ~/.local/bin/chezmoi; using $(brew --prefix)/bin/chezmoi"
+fi
 {{ end -}}
