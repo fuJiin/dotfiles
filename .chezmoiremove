@@ -1,0 +1,8 @@
+# Targets that chezmoi should delete from $HOME because their source was removed.
+
+# Retired .agents/CONTEXT.md workflow (replaced by the handoff skill)
+.claude/skills/context-clean
+.claude/skills/context-init
+.claude/skills/context-open
+.claude/skills/context-read
+.claude/skills/context-update
