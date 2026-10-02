@@ -34,9 +34,6 @@ brew "uv"            # used by ~/.config/imir/bake-hook.sh
 if OS.mac?
   cask_args appdir: "/Applications"
 
-  # Required by the Claude Code hooks in ~/.claude/settings.json
-  brew "terminal-notifier"
-
   # Terminal
   cask "ghostty"
 

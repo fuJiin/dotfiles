@@ -4,42 +4,19 @@ input=$(cat)
 if [ -z "$input" ] || [ "$input" = "{}" ]; then
     input='{}'
 fi
-{{ if eq .chezmoi.os "darwin" -}}
-echo "$input" | jq '. + {
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "hooks": {
-    "Notification": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "terminal-notifier -title \"Claude Code\" -message \"Needs your attention\" -sound Glass"
-          }
-        ]
-      }
-    ],
-    "Stop": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "terminal-notifier -title \"Claude Code\" -message \"Task complete\" -sound Glass"
-          }
-        ]
-      }
-    ]
-  }
-}'
-{{ else -}}
-echo "$input" | jq '. + {
+# Strip the terminal-notifier hooks this file used to install. They failed on
+# every turn once macOS notifications were off for terminal-notifier, and
+# Claude Code's own notifications cover the same ground. Hooks added by other
+# means are left alone.
+echo "$input" | jq '
+  if .hooks then
+    .hooks |= (with_entries(.value |= map(select(any(.hooks[]?; .command? // "" | test("terminal-notifier")) | not)))
+               | with_entries(select(.value | length > 0)))
+    | if .hooks == {} then del(.hooks) else . end
+  else . end
+  + {
   "statusLine": {
     "type": "command",
     "command": "~/.claude/statusline.sh"
   }
 }'
-{{ end -}}

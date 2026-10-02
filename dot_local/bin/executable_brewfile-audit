@@ -143,7 +143,6 @@ REQUIRED=(
 # macOS-only requirements.
 if [ "$(uname)" = "Darwin" ]; then
     REQUIRED+=(
-        "terminal-notifier|the Claude Code hooks in ~/.claude/settings.json"
         "ghostty|the gt alias; ~/.config/ghostty/config"
         "emacs-plus|EDITOR/VISUAL are emacsclient; ~/.doom.d/**"
         "font-symbols-only-nerd-font|Doom's icons (nerd-icons); doom doctor fails without it"
